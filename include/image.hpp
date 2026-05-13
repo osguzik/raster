@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 struct Color {
@@ -17,4 +18,8 @@ struct Image {
   Color get(int x, int y) const;
   void set(int x, int y, const Color &color);
 };
+
+namespace ppm {
+  bool write(const Image &img, const std::string &filename);
+}
 

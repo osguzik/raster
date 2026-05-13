@@ -1,3 +1,6 @@
+#include <fstream>
+#include <iostream>
+#include <string>
 #include "image.hpp"
 
 Image::Image(int w, int h, Color fill) : w(w), h(h), pixels(w * h * 3) {
@@ -18,5 +21,22 @@ void Image::set(int x, int y, const Color &color) {
   pixels[i] = color.r;
   pixels[i + 1] = color.g;
   pixels[i + 2] = color.b;
+}
+
+namespace ppm {
+  bool write(const Image &img, const std::string &filename) {
+    std::ofstream out(filename, std::ios::binary);
+    if(!out.is_open()) {
+      std::cerr << "can't open file " << filename << "\n";
+      return false;
+    }
+    out << "P6\n" << img.w << " " << img.h << "\n255\n";
+    out.write(reinterpret_cast<const char *>(img.pixels.data()), img.pixels.size());
+    if(!out.good()) {
+      std::cerr << "an error occured while writing " << filename << "\n";
+      return false;
+    }
+    return true;
+  }
 }
 
