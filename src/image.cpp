@@ -28,13 +28,13 @@ namespace ppm {
   bool write(const Image &img, const std::string &filename) {
     std::ofstream out(filename, std::ios::binary);
     if (!out.is_open()) {
-      std::cerr << "can't open file " << filename << "\n";
+      std::cerr << "error: failed to open file " << filename << "\n";
       return false;
     }
     out << "P6\n" << img.w << " " << img.h << "\n255\n";
     out.write(reinterpret_cast<const char *>(img.pixels.data()), img.pixels.size());
     if (!out.good()) {
-      std::cerr << "an error occured while writing " << filename << "\n";
+      std::cerr << "error: failed to write to file " << filename << "\n";
       return false;
     }
     return true;
