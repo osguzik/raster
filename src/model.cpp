@@ -19,7 +19,16 @@ Model loadModel(const std::string& filename) {
 
     iss >> keyword;
     if (keyword == "v") {
-    } else if (keyword == "f") {}
+      Vec3 v;
+      iss >> v.x >> v.y >> v.z;
+      model.verts.push_back(v);
+    } else if (keyword == "f") {
+      std::string s;
+      for (int i = 0; i < 3; i++) {
+        iss >> s;
+        model.faces.push_back(std::stoi(s) - 1);
+      }
+    }
   }
 
   return model;
