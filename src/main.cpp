@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iostream>
 #include <utility>
 #include "image.hpp"
 #include "model.hpp"
@@ -7,12 +8,6 @@ constexpr int w = 1024;
 constexpr int h = 1024;
 
 constexpr Color green = {0, 255, 0};
-/*
-constexpr Color white = {255, 255, 255};
-constexpr Color red = {255, 0, 0};
-constexpr Color blue = {0, 0, 255};
-constexpr Color yellow = {255, 255, 0};
-*/
 
 void line(int x0, int y0, int x1, int y1, Image &img, const Color &color) {
   bool steep = std::abs(x0 - x1) < std::abs(y0 - y1);
@@ -49,9 +44,14 @@ void line(int x0, int y0, int x1, int y1, Image &img, const Color &color) {
   }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+  if (argc < 2) {
+    std::cerr << "usage: " << argv[0] << " /path/to/model.obj\n";
+    return 1;
+  }
+
   Image framebuffer(w, h);
-  Model model = loadModel("../obj/diablo3_pose.obj");
+  Model model = loadModel(argv[1]);
 
   for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
     for (int j = 0; j < 3; j++) {
