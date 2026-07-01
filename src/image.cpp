@@ -1,7 +1,8 @@
+#include "image.hpp"
+
 #include <fstream>
 #include <iostream>
 #include <string>
-#include "image.hpp"
 
 Image::Image(int w, int h, Color fill) : w(w), h(h), pixels(w * h * 3) {
   for (int i = 0; i < w * h; i++) {

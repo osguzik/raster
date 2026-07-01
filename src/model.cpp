@@ -1,8 +1,9 @@
+#include "model.hpp"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "model.hpp"
 
 Model loadModel(const std::string& filename) {
   Model model;
