@@ -17,18 +17,26 @@ void triangle(const Vec2 &v0, const Vec2 &v1, const Vec2 &v2, Image &img, const 
   int minY = static_cast<int>(std::floor(std::min({v0.y, v1.y, v2.y})));
   int maxY = static_cast<int>(std::ceil(std::max({v0.y, v1.y, v2.y})));
 
+  Vec2 start = {minX + 0.5f, minY + 0.5f};
+  float rowE0 = edge(start, v0, dir0);
+  float rowE1 = edge(start, v1, dir1);
+  float rowE2 = edge(start, v2, dir2);
+
   for(int y = minY; y <= maxY; y++) {
+    float e0 = rowE0, e1 = rowE1, e2 = rowE2;
     for(int x = minX; x <= maxX; x++) {
-      Vec2 p = {x + 0.5f, y + 0.5f};
-
-      float e0 = edge(p, v0, dir0);
-      float e1 = edge(p, v1, dir1);
-      float e2 = edge(p, v2, dir2);
-
       if(e0 >= 0 && e1 >= 0 && e2 >= 0) {
         img.set(x, y, color);
       }
+
+      e0 += dir0.y;
+      e1 += dir1.y;
+      e2 += dir2.y;
     }
+
+    rowE0 -= dir0.x;
+    rowE1 -= dir1.x;
+    rowE2 -= dir2.x;
   }
 }
 
