@@ -8,6 +8,11 @@ float edge(const Vec2 &p, const Vec2 &a, const Vec2 &dir) {
 }
 
 void triangle(const Vec2 &v0, const Vec2 &v1, const Vec2 &v2, Image &img, const Color &color) {
+  float signedArea = (v1.x - v0.x) * (v2.y - v0.y) - (v1.y - v0.y) * (v2.x - v0.x);
+  if (signedArea >= 0.0f) { // back-facing
+    return;
+  }
+
   Vec2 dir0 = {v1.x - v0.x, v1.y - v0.y};
   Vec2 dir1 = {v2.x - v1.x, v2.y - v1.y};
   Vec2 dir2 = {v0.x - v2.x, v0.y - v2.y};
