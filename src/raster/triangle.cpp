@@ -2,13 +2,14 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <cstdlib>
 
 float edge(const Vec3 &p, const Vec3 &a, const Vec3 &dir) {
   return (p.x - a.x) * dir.y - (p.y - a.y) * dir.x;
 }
 
-void triangle(const Vec3 &v0, const Vec3 &v1, const Vec3 &v2, Image &img, const Color &color) {
+void triangle(const Vec3 &v0, const Vec3 &v1, const Vec3 &v2, const Color &c0, const Color &c1, const Color &c2, Image &img) {
   float signedArea = (v1.x - v0.x) * (v2.y - v0.y) - (v1.y - v0.y) * (v2.x - v0.x);
   if (signedArea >= 0.0f) { // back-facing
     return;
@@ -38,6 +39,11 @@ void triangle(const Vec3 &v0, const Vec3 &v1, const Vec3 &v2, Image &img, const 
         float w2 = e0 / totalArea;
 
         float z = w0 * v0.z + w1 * v1.z + w2 * v2.z;
+
+        Color color;
+        color.r = static_cast<std::uint8_t>(w0 * c0.r + w1 * c1.r + w2 * c2.r);
+        color.g = static_cast<std::uint8_t>(w0 * c0.g + w1 * c1.g + w2 * c2.g);
+        color.b = static_cast<std::uint8_t>(w0 * c0.b + w1 * c1.b + w2 * c2.b);
 
         img.set(x, y, color);
       }
