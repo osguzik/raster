@@ -2,27 +2,29 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdlib>
 
-float edge(const Vec2 &p, const Vec2 &a, const Vec2 &dir) {
+float edge(const Vec3 &p, const Vec3 &a, const Vec3 &dir) {
   return (p.x - a.x) * dir.y - (p.y - a.y) * dir.x;
 }
 
-void triangle(const Vec2 &v0, const Vec2 &v1, const Vec2 &v2, Image &img, const Color &color) {
+void triangle(const Vec3 &v0, const Vec3 &v1, const Vec3 &v2, Image &img, const Color &color) {
   float signedArea = (v1.x - v0.x) * (v2.y - v0.y) - (v1.y - v0.y) * (v2.x - v0.x);
   if (signedArea >= 0.0f) { // back-facing
     return;
   }
+  float totalArea = std::abs(signedArea);
 
-  Vec2 dir0 = {v1.x - v0.x, v1.y - v0.y};
-  Vec2 dir1 = {v2.x - v1.x, v2.y - v1.y};
-  Vec2 dir2 = {v0.x - v2.x, v0.y - v2.y};
+  Vec3 dir0 = {v1.x - v0.x, v1.y - v0.y};
+  Vec3 dir1 = {v2.x - v1.x, v2.y - v1.y};
+  Vec3 dir2 = {v0.x - v2.x, v0.y - v2.y};
 
   int minX = static_cast<int>(std::floor(std::min({v0.x, v1.x, v2.x})));
   int maxX = static_cast<int>(std::ceil(std::max({v0.x, v1.x, v2.x})));
   int minY = static_cast<int>(std::floor(std::min({v0.y, v1.y, v2.y})));
   int maxY = static_cast<int>(std::ceil(std::max({v0.y, v1.y, v2.y})));
 
-  Vec2 start = {minX + 0.5f, minY + 0.5f};
+  Vec3 start = {minX + 0.5f, minY + 0.5f};
   float rowE0 = edge(start, v0, dir0);
   float rowE1 = edge(start, v1, dir1);
   float rowE2 = edge(start, v2, dir2);
@@ -31,6 +33,12 @@ void triangle(const Vec2 &v0, const Vec2 &v1, const Vec2 &v2, Image &img, const 
     float e0 = rowE0, e1 = rowE1, e2 = rowE2;
     for(int x = minX; x <= maxX; x++) {
       if(e0 >= 0 && e1 >= 0 && e2 >= 0) {
+        float w0 = e1 / totalArea;
+        float w1 = e2 / totalArea;
+        float w2 = e0 / totalArea;
+
+        float z = w0 * v0.z + w1 * v1.z + w2 * v2.z;
+
         img.set(x, y, color);
       }
 

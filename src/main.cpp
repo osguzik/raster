@@ -27,9 +27,9 @@ int main(int argc, char *argv[]) {
     rnd.g = std::rand() % 255;
     rnd.b = std::rand() % 255;
 
-    Vec2 p0 = {(v0.x + 1) * w / 2, h - ((v0.y + 1) * h / 2)};
-    Vec2 p1 = {(v1.x + 1) * w / 2, h - ((v1.y + 1) * h / 2)};
-    Vec2 p2 = {(v2.x + 1) * w / 2, h - ((v2.y + 1) * h / 2)};
+    Vec3 p0 = {(v0.x + 1) * w / 2, h - ((v0.y + 1) * h / 2), v0.z};
+    Vec3 p1 = {(v1.x + 1) * w / 2, h - ((v1.y + 1) * h / 2), v1.z};
+    Vec3 p2 = {(v2.x + 1) * w / 2, h - ((v2.y + 1) * h / 2), v2.z};
 
     triangle(p0, p1, p2, framebuffer, rnd);
   }
