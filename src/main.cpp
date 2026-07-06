@@ -1,6 +1,7 @@
 #include "image.hpp"
 #include "model.hpp"
 #include "raster/triangle.hpp"
+#include "raster/vertex.hpp"
 
 #include <cstdint>
 #include <cstdlib>
@@ -19,19 +20,23 @@ int main(int argc, char *argv[]) {
   Model model = loadModel(argv[1]);
 
   for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
-    Vec3 v0 = model.verts[model.faces[i * 3]];
-    Vec3 v1 = model.verts[model.faces[i * 3 + 1]];
-    Vec3 v2 = model.verts[model.faces[i * 3 + 2]];
+    Vec3 modelP0 = model.verts[model.faces[i * 3]];
+    Vec3 modelP1 = model.verts[model.faces[i * 3 + 1]];
+    Vec3 modelP2 = model.verts[model.faces[i * 3 + 2]];
     
     Color c0{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
     Color c1{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
     Color c2{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
 
-    Vec3 p0 = {(v0.x + 1) * w / 2, h - ((v0.y + 1) * h / 2), v0.z};
-    Vec3 p1 = {(v1.x + 1) * w / 2, h - ((v1.y + 1) * h / 2), v1.z};
-    Vec3 p2 = {(v2.x + 1) * w / 2, h - ((v2.y + 1) * h / 2), v2.z};
+    Vec3 screenP0 = {(modelP0.x + 1) * w / 2, h - ((modelP0.y + 1) * h / 2), modelP0.z};
+    Vec3 screenP1 = {(modelP1.x + 1) * w / 2, h - ((modelP1.y + 1) * h / 2), modelP1.z};
+    Vec3 screenP2 = {(modelP2.x + 1) * w / 2, h - ((modelP2.y + 1) * h / 2), modelP2.z};
 
-    triangle(p0, p1, p2, c0, c1, c2, framebuffer);
+    Vertex v0{screenP0, c0};
+    Vertex v1{screenP1, c1};
+    Vertex v2{screenP2, c2};
+
+    triangle(v0, v1, v2, framebuffer);
   }
 
   ppm::write(framebuffer, "framebuffer.ppm");

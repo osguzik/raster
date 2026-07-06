@@ -3,32 +3,35 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
-#include <cstdlib>
 
 float edge(const Vec3 &p, const Vec3 &a, const Vec3 &dir) {
   return (p.x - a.x) * dir.y - (p.y - a.y) * dir.x;
 }
 
-void triangle(const Vec3 &v0, const Vec3 &v1, const Vec3 &v2, const Color &c0, const Color &c1, const Color &c2, Image &img) {
-  float signedArea = (v1.x - v0.x) * (v2.y - v0.y) - (v1.y - v0.y) * (v2.x - v0.x);
+void triangle(const Vertex &v0, const Vertex &v1, const Vertex &v2, Image &img) {
+  const Vec3 &p0 = v0.pos;
+  const Vec3 &p1 = v1.pos;
+  const Vec3 &p2 = v2.pos;
+
+  float signedArea = (p1.x - p0.x) * (p2.y - p0.y) - (p1.y - p0.y) * (p2.x - p0.x);
   if (signedArea >= 0.0f) { // back-facing
     return;
   }
   float totalArea = std::abs(signedArea);
 
-  Vec3 dir0 = {v1.x - v0.x, v1.y - v0.y};
-  Vec3 dir1 = {v2.x - v1.x, v2.y - v1.y};
-  Vec3 dir2 = {v0.x - v2.x, v0.y - v2.y};
+  Vec3 dir0 = {p1.x - p0.x, p1.y - p0.y};
+  Vec3 dir1 = {p2.x - p1.x, p2.y - p1.y};
+  Vec3 dir2 = {p0.x - p2.x, p0.y - p2.y};
 
-  int minX = static_cast<int>(std::floor(std::min({v0.x, v1.x, v2.x})));
-  int maxX = static_cast<int>(std::ceil(std::max({v0.x, v1.x, v2.x})));
-  int minY = static_cast<int>(std::floor(std::min({v0.y, v1.y, v2.y})));
-  int maxY = static_cast<int>(std::ceil(std::max({v0.y, v1.y, v2.y})));
+  int minX = static_cast<int>(std::floor(std::min({p0.x, p1.x, p2.x})));
+  int maxX = static_cast<int>(std::ceil(std::max({p0.x, p1.x, p2.x})));
+  int minY = static_cast<int>(std::floor(std::min({p0.y, p1.y, p2.y})));
+  int maxY = static_cast<int>(std::ceil(std::max({p0.y, p1.y, p2.y})));
 
   Vec3 start = {minX + 0.5f, minY + 0.5f};
-  float rowE0 = edge(start, v0, dir0);
-  float rowE1 = edge(start, v1, dir1);
-  float rowE2 = edge(start, v2, dir2);
+  float rowE0 = edge(start, p0, dir0);
+  float rowE1 = edge(start, p1, dir1);
+  float rowE2 = edge(start, p2, dir2);
 
   for(int y = minY; y <= maxY; y++) {
     float e0 = rowE0, e1 = rowE1, e2 = rowE2;
@@ -38,14 +41,14 @@ void triangle(const Vec3 &v0, const Vec3 &v1, const Vec3 &v2, const Color &c0, c
         float w1 = e2 / totalArea;
         float w2 = e0 / totalArea;
 
-        float z = w0 * v0.z + w1 * v1.z + w2 * v2.z;
+        // float z = w0 * p0.z + w1 * p1.z + w2 * p2.z;
 
-        Color color;
-        color.r = static_cast<std::uint8_t>(w0 * c0.r + w1 * c1.r + w2 * c2.r);
-        color.g = static_cast<std::uint8_t>(w0 * c0.g + w1 * c1.g + w2 * c2.g);
-        color.b = static_cast<std::uint8_t>(w0 * c0.b + w1 * c1.b + w2 * c2.b);
+        Color interpolatedColor;
+        interpolatedColor.r = static_cast<std::uint8_t>(w0 * v0.color.r + w1 * v1.color.r + w2 * v2.color.r);
+        interpolatedColor.g = static_cast<std::uint8_t>(w0 * v0.color.g + w1 * v1.color.g + w2 * v2.color.g);
+        interpolatedColor.b = static_cast<std::uint8_t>(w0 * v0.color.b + w1 * v1.color.b + w2 * v2.color.b);
 
-        img.set(x, y, color);
+        img.set(x, y, interpolatedColor);
       }
 
       e0 += dir0.y;
