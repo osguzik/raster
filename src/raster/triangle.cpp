@@ -3,12 +3,13 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <vector>
 
 float edge(const Vec3 &p, const Vec3 &a, const Vec3 &dir) {
   return (p.x - a.x) * dir.y - (p.y - a.y) * dir.x;
 }
 
-void triangle(const Vertex &v0, const Vertex &v1, const Vertex &v2, Image &img) {
+void triangle(const Vertex &v0, const Vertex &v1, const Vertex &v2, Image &img, std::vector<float> &zbuffer) {
   const Vec3 &p0 = v0.pos;
   const Vec3 &p1 = v1.pos;
   const Vec3 &p2 = v2.pos;
@@ -41,14 +42,17 @@ void triangle(const Vertex &v0, const Vertex &v1, const Vertex &v2, Image &img) 
         float w1 = e2 / totalArea;
         float w2 = e0 / totalArea;
 
-        // float z = w0 * p0.z + w1 * p1.z + w2 * p2.z;
-
         Color interpolatedColor;
         interpolatedColor.r = static_cast<std::uint8_t>(w0 * v0.color.r + w1 * v1.color.r + w2 * v2.color.r);
         interpolatedColor.g = static_cast<std::uint8_t>(w0 * v0.color.g + w1 * v1.color.g + w2 * v2.color.g);
         interpolatedColor.b = static_cast<std::uint8_t>(w0 * v0.color.b + w1 * v1.color.b + w2 * v2.color.b);
 
-        img.set(x, y, interpolatedColor);
+        float z = w0 * p0.z + w1 * p1.z + w2 * p2.z;
+        int idx = y * img.w + x;
+        if (z > zbuffer[idx]) {
+          zbuffer[idx] = z;
+          img.set(x, y, interpolatedColor);
+        }
       }
 
       e0 += dir0.y;

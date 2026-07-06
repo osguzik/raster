@@ -6,6 +6,8 @@
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
+#include <limits>
+#include <vector>
 
 constexpr int w = 1024;
 constexpr int h = 1024;
@@ -18,6 +20,8 @@ int main(int argc, char *argv[]) {
 
   Image framebuffer(w, h);
   Model model = loadModel(argv[1]);
+
+  std::vector<float> zbuffer(w * h, std::numeric_limits<float>::lowest());
 
   for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
     Vec3 modelP0 = model.verts[model.faces[i * 3]];
@@ -36,7 +40,7 @@ int main(int argc, char *argv[]) {
     Vertex v1{screenP1, c1};
     Vertex v2{screenP2, c2};
 
-    triangle(v0, v1, v2, framebuffer);
+    triangle(v0, v1, v2, framebuffer, zbuffer);
   }
 
   ppm::write(framebuffer, "framebuffer.ppm");
