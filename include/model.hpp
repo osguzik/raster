@@ -1,8 +1,9 @@
 #pragma once
 
+#include "math/vec.hpp"
+
 #include <string>
 #include <vector>
-#include "math/vec.hpp"
 
 struct Model {
   std::vector<Vec3> verts;
