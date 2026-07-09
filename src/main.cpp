@@ -8,12 +8,13 @@
 #include <cstdlib>
 #include <iostream>
 #include <limits>
+#include <numbers>
 #include <vector>
 
 constexpr int w = 1024;
 constexpr int h = 1024;
 
-constexpr float angle = M_PI / 3.0f;
+constexpr float angle = std::numbers::pi_v<float> / 3.0f;
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
