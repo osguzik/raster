@@ -8,3 +8,7 @@ struct Vec3 {
   Vec3 operator*(float s) const { return {x * s, y * s, z * s}; }
 };
 
+struct Vec4 {
+  float x = 0, y = 0, z = 0, w = 0;
+};
+
