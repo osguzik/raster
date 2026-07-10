@@ -12,9 +12,7 @@ Image zbufferView(const std::vector<float> &zbuffer, int w, int h) {
   float zMin = std::numeric_limits<float>::max();
   float zMax = std::numeric_limits<float>::lowest();
 
-  for (std::size_t i = 0; i < zbuffer.size(); i++) {
-    float z = zbuffer[i];
-
+  for (float z : zbuffer) {
     if (z == std::numeric_limits<float>::lowest()) {
       continue;
     }
