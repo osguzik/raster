@@ -4,6 +4,7 @@
 #include "model.hpp"
 #include "raster/triangle.hpp"
 #include "raster/vertex.hpp"
+#include "zbuffer_view.hpp"
 
 #include <cstdint>
 #include <cstdlib>
@@ -49,7 +50,10 @@ int main(int argc, char *argv[]) {
     triangle(v0, v1, v2, framebuffer, zbuffer);
   }
 
+  Image zbufferImg = zbufferView(zbuffer, w, h);
+
   ppm::write(framebuffer, "framebuffer.ppm");
+  ppm::write(zbufferImg, "zbuffer.ppm");
   return 0;
 }
 
