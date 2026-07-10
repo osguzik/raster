@@ -18,9 +18,17 @@ constexpr int h = 1024;
 
 constexpr float angle = std::numbers::pi_v<float> / 3.0f;
 
-Vec3 toScreen(const Vec3 &modelPos, float angle) {
+Vec3 project(const Vec3 &v) {
+  return {
+    (v.x + 1) * w / 2,
+    h - ((v.y + 1) * h / 2),
+    v.z
+  };
+}
+
+Vec3 toScreen(const Vec3 &modelPos) {
   Vec3 rotated = rotateY(modelPos, angle);
-  return {(rotated.x + 1) * w / 2, h - ((rotated.y + 1) * h / 2), rotated.z};
+  return project(rotated);
 }
 
 int main(int argc, char *argv[]) {
@@ -35,9 +43,9 @@ int main(int argc, char *argv[]) {
   std::vector<float> zbuffer(w * h, std::numeric_limits<float>::lowest());
 
   for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
-    Vec3 screenPos0 = toScreen(model.verts[model.faces[i * 3]], angle);
-    Vec3 screenPos1 = toScreen(model.verts[model.faces[i * 3 + 1]], angle);
-    Vec3 screenPos2 = toScreen(model.verts[model.faces[i * 3 + 2]], angle);
+    Vec3 screenPos0 = toScreen(model.verts[model.faces[i * 3]]);
+    Vec3 screenPos1 = toScreen(model.verts[model.faces[i * 3 + 1]]);
+    Vec3 screenPos2 = toScreen(model.verts[model.faces[i * 3 + 2]]);
 
     Color c0{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
     Color c1{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
