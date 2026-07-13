@@ -16,9 +16,9 @@
 constexpr int w = 1024;
 constexpr int h = 1024;
 
-constexpr float angle = std::numbers::pi_v<float> / 3.0f;
+constexpr float angle = std::numbers::pi_v<float> / 6.0f;
 
-Vec3 project(const Vec3 &v) {
+Vec3 project(const Vec4 &v) {
   return {
     (v.x + 1) * w / 2,
     h - ((v.y + 1) * h / 2),
@@ -27,8 +27,13 @@ Vec3 project(const Vec3 &v) {
 }
 
 Vec3 toScreen(const Vec3 &modelPos) {
-  Vec3 rotated = rotateY(modelPos, angle);
-  return project(rotated);
+  Transform t;
+  t.position = {0.3f, 0.0f, 0.0f};
+  t.rotation.y = angle;
+  t.scale = {0.5f, 0.5f, 0.5f};
+  Mat4 m = modelMat(t);
+  Vec4 transformed = m * Vec4{modelPos.x, modelPos.y, modelPos.z, 1.0f};
+  return project(transformed);
 }
 
 int main(int argc, char *argv[]) {
