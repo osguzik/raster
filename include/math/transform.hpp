@@ -57,7 +57,18 @@ struct Transform {
 };
 
 inline Mat4 modelMat(const Transform &t) {
-  Mat4 rotationMat = rotateX(t.rotation.x) * rotateY(t.rotation.y) * rotateZ(t.rotation.z);
+  const Mat4 rotationMat = rotateX(t.rotation.x) * rotateY(t.rotation.y) * rotateZ(t.rotation.z);
   return translate(t.position) * rotationMat * scale(t.scale);
+}
+
+// right-handed coordinate system
+inline Mat4 perspective(float fovY, float ar, float near, float far) {
+  const float tanHalfFovY = std::tan(fovY / 2);
+  return Mat4{{
+    {1 / (ar * tanHalfFovY), 0, 0, 0},
+    {0, 1 / tanHalfFovY, 0, 0},
+    {0, 0, (near + far) / (near - far), (2 * near * far) / (near - far)},
+    {0, 0, -1, 0}
+  }};
 }
 

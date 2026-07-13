@@ -18,22 +18,21 @@ constexpr int h = 1024;
 
 constexpr float angle = std::numbers::pi_v<float> / 6.0f;
 
-Vec3 project(const Vec4 &v) {
-  return {
-    (v.x + 1) * w / 2,
-    h - ((v.y + 1) * h / 2),
-    v.z
-  };
-}
-
 Vec3 toScreen(const Vec3 &modelPos) {
   Transform t;
-  t.position = {0.3f, 0.0f, 0.0f};
+  t.position = {0.3f, 0.0f, -2.0f};
   t.rotation.y = angle;
   t.scale = {0.5f, 0.5f, 0.5f};
   Mat4 m = modelMat(t);
-  Vec4 transformed = m * Vec4{modelPos.x, modelPos.y, modelPos.z, 1.0f};
-  return project(transformed);
+  Mat4 projection = perspective(std::numbers::pi_v<float> / 4.0f, static_cast<float>(w) / h, 0.1f, 10.0f);
+
+  Vec4 transformed = projection * m * Vec4{modelPos.x, modelPos.y, modelPos.z, 1.0f};
+
+  return {
+    (transformed.x + 1) * w / 2,
+    h - ((transformed.y + 1) * h / 2),
+    transformed.z
+  };
 }
 
 int main(int argc, char *argv[]) {
