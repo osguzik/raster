@@ -25,5 +25,19 @@ struct Mat4 {
       rows[3].x * v.x + rows[3].y * v.y + rows[3].z * v.z + rows[3].w * v.w
     };
   }
+
+  Mat4 operator*(const Mat4 &m) const {
+    Mat4 result{};
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+        float sum = 0.0f;
+        for (int k = 0; k < 4; k++) {
+          sum += rows[i][k] * m.rows[k][j];
+        }
+        result.rows[i][j] = sum;
+      }
+    }
+    return result;
+  }
 };
 

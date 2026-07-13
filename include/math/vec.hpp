@@ -10,5 +10,13 @@ struct Vec3 {
 
 struct Vec4 {
   float x = 0, y = 0, z = 0, w = 0;
+
+  float operator[](int i) const {
+    return (&x)[i];
+  }
+
+  float &operator[](int i) {
+    return (&x)[i];
+  }
 };
 
