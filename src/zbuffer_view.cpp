@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <limits>
+#include <vector>
 
 Image zbufferView(const std::vector<float> &zbuffer, int w, int h) {
   Image zbufferImg(w, h);

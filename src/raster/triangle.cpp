@@ -1,5 +1,7 @@
 #include "raster/triangle.hpp"
 
+#include "raster/vertex.hpp"
+
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
