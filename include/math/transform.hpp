@@ -50,3 +50,14 @@ inline Mat4 rotateZ(float rad) {
   }};
 }
 
+struct Transform {
+  Vec3 position = {0, 0, 0};
+  Vec3 rotation = {0, 0, 0};
+  Vec3 scale = {1, 1, 1};
+};
+
+inline Mat4 modelMat(const Transform &t) {
+  Mat4 rotationMat = rotateX(t.rotation.x) * rotateY(t.rotation.y) * rotateZ(t.rotation.z);
+  return translate(t.position) * rotationMat * scale(t.scale);
+}
+
