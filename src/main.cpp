@@ -24,14 +24,15 @@ Vec3 toScreen(const Vec3 &modelPos) {
   t.rotation.y = angle;
   t.scale = {0.5f, 0.5f, 0.5f};
   Mat4 m = modelMat(t);
-  Mat4 projection = perspective(std::numbers::pi_v<float> / 4.0f, static_cast<float>(w) / h, 0.1f, 10.0f);
 
-  Vec4 transformed = projection * m * Vec4{modelPos.x, modelPos.y, modelPos.z, 1.0f};
+  Mat4 projection = perspective(std::numbers::pi_v<float> / 4.0f, static_cast<float>(w) / h, 0.1f, 10.0f);
+  Vec4 clip = projection * m * Vec4{modelPos.x, modelPos.y, modelPos.z, 1.0f};
+  Vec3 ndc = {clip.x / clip.w, clip.y / clip.w, clip.z / clip.w};
 
   return {
-    (transformed.x + 1) * w / 2,
-    h - ((transformed.y + 1) * h / 2),
-    transformed.z
+    (ndc.x + 1) * w / 2,
+    h - ((ndc.y + 1) * h / 2),
+    ndc.z
   };
 }
 
