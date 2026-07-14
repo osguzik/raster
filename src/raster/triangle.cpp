@@ -51,7 +51,7 @@ void triangle(const Vertex &v0, const Vertex &v1, const Vertex &v2, Image &img, 
 
         float z = w0 * p0.z + w1 * p1.z + w2 * p2.z;
         int idx = y * img.w + x;
-        if (z > zbuffer[idx]) {
+        if (z < zbuffer[idx]) {
           zbuffer[idx] = z;
           img.set(x, y, interpolatedColor);
         }

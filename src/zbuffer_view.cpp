@@ -14,7 +14,7 @@ Image zbufferView(const std::vector<float> &zbuffer, int w, int h) {
   float zMax = std::numeric_limits<float>::lowest();
 
   for (float z : zbuffer) {
-    if (z == std::numeric_limits<float>::lowest()) {
+    if (z == std::numeric_limits<float>::max()) {
       continue;
     }
 
@@ -25,7 +25,7 @@ Image zbufferView(const std::vector<float> &zbuffer, int w, int h) {
   for (int y = 0; y < h; y++) {
     for (int x = 0; x < w; x++) {
       float z = zbuffer[y * w + x];
-      float depth = (z - zMin) / (zMax - zMin);
+      float depth = 1.0f - (z - zMin) / (zMax - zMin);
       unsigned char gray = static_cast<unsigned char>(depth * 255.0f);
       zbufferImg.set(x, y, Color{gray, gray, gray});
     }

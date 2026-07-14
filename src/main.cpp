@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
   Image framebuffer(w, h);
   Model model = loadModel(argv[1]);
 
-  std::vector<float> zbuffer(w * h, std::numeric_limits<float>::lowest());
+  std::vector<float> zbuffer(w * h, std::numeric_limits<float>::max());
 
   for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
     Vec3 screenPos0 = toScreen(model.verts[model.faces[i * 3]]);
