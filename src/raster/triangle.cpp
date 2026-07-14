@@ -1,5 +1,6 @@
 #include "raster/triangle.hpp"
 
+#include "image.hpp"
 #include "raster/vertex.hpp"
 
 #include <algorithm>
@@ -30,6 +31,11 @@ void triangle(const Vertex &v0, const Vertex &v1, const Vertex &v2, Image &img, 
   int maxX = static_cast<int>(std::ceil(std::max({p0.x, p1.x, p2.x})));
   int minY = static_cast<int>(std::floor(std::min({p0.y, p1.y, p2.y})));
   int maxY = static_cast<int>(std::ceil(std::max({p0.y, p1.y, p2.y})));
+
+  minX = std::max(minX, 0);
+  maxX = std::min(maxX, img.w - 1);
+  minY = std::max(minY, 0);
+  maxY = std::min(maxY, img.h - 1);
 
   Vec3 start = {minX + 0.5f, minY + 0.5f};
   float rowE0 = edge(start, p0, dir0);

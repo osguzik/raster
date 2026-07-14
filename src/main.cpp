@@ -20,9 +20,9 @@ constexpr float angle = std::numbers::pi_v<float> / 6.0f;
 
 Vec3 toScreen(const Vec3 &modelPos) {
   Transform t;
-  t.position = {0.3f, 0.0f, -2.0f};
+  t.position = {0.0f, 0.0f, -2.0f};
   t.rotation.y = angle;
-  t.scale = {0.5f, 0.5f, 0.5f};
+  t.scale = {1.0f, 1.0f, 1.0f};
   Mat4 m = modelMat(t);
 
   Mat4 projection = perspective(std::numbers::pi_v<float> / 4.0f, static_cast<float>(w) / h, 0.1f, 10.0f);
