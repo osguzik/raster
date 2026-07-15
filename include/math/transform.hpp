@@ -61,17 +61,6 @@ inline Mat4 modelMat(const Transform &t) {
   return translate(t.position) * rotationMat * scale(t.scale);
 }
 
-// right-handed coordinate system
-inline Mat4 perspective(float fovY, float ar, float near, float far) {
-  const float tanHalfFovY = std::tan(fovY / 2);
-  return Mat4{{
-    {1 / (ar * tanHalfFovY), 0, 0, 0},
-    {0, 1 / tanHalfFovY, 0, 0},
-    {0, 0, (near + far) / (near - far), (2 * near * far) / (near - far)},
-    {0, 0, -1, 0}
-  }};
-}
-
 inline Mat4 lookAt(const Vec3 &eye, const Vec3 &at, const Vec3 &up) {
   Vec3 n = normalize(eye - at);
   Vec3 r = normalize(cross(up, n));
@@ -81,6 +70,17 @@ inline Mat4 lookAt(const Vec3 &eye, const Vec3 &at, const Vec3 &up) {
     {u.x, u.y, u.z, -dot(u, eye)},
     {n.x, n.y, n.z, -dot(n, eye)},
     {0, 0, 0, 1}
+  }};
+}
+
+// right-handed coordinate system
+inline Mat4 perspective(float fovY, float ar, float near, float far) {
+  const float tanHalfFovY = std::tan(fovY / 2);
+  return Mat4{{
+    {1 / (ar * tanHalfFovY), 0, 0, 0},
+    {0, 1 / tanHalfFovY, 0, 0},
+    {0, 0, (near + far) / (near - far), (2 * near * far) / (near - far)},
+    {0, 0, -1, 0}
   }};
 }
 
