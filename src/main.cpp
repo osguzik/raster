@@ -25,8 +25,9 @@ Vec3 toScreen(const Vec3 &modelPos) {
   t.scale = {1.0f, 1.0f, 1.0f};
   Mat4 m = modelMat(t);
 
+  Mat4 view = lookAt({0, 0, 1}, t.position, {0, 1, 0});
   Mat4 projection = perspective(std::numbers::pi_v<float> / 4.0f, static_cast<float>(w) / h, 0.1f, 10.0f);
-  Vec4 clip = projection * m * Vec4{modelPos.x, modelPos.y, modelPos.z, 1.0f};
+  Vec4 clip = projection * view * m * Vec4{modelPos.x, modelPos.y, modelPos.z, 1.0f};
   Vec3 ndc = {clip.x / clip.w, clip.y / clip.w, clip.z / clip.w};
 
   return {

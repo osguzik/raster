@@ -72,3 +72,15 @@ inline Mat4 perspective(float fovY, float ar, float near, float far) {
   }};
 }
 
+inline Mat4 lookAt(const Vec3 &eye, const Vec3 &at, const Vec3 &up) {
+  Vec3 n = normalize(eye - at);
+  Vec3 r = normalize(cross(up, n));
+  Vec3 u = cross(n, r);
+  return Mat4{{
+    {r.x, r.y, r.z, -dot(r, eye)},
+    {u.x, u.y, u.z, -dot(u, eye)},
+    {n.x, n.y, n.z, -dot(n, eye)},
+    {0, 0, 0, 1}
+  }};
+}
+
