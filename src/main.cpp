@@ -1,3 +1,4 @@
+#include "camera.hpp"
 #include "image.hpp"
 #include "math/transform.hpp"
 #include "math/vec.hpp"
@@ -16,17 +17,13 @@
 constexpr int w = 1024;
 constexpr int h = 1024;
 
-constexpr float angle = std::numbers::pi_v<float> / 6.0f;
+constexpr float rotationAngle = std::numbers::pi_v<float> / 6.0f;
 
-Vec3 toScreen(const Vec3 &modelPos) {
-  Transform t;
-  t.position = {0.0f, 0.0f, -2.0f};
-  t.rotation.y = angle;
-  t.scale = {1.0f, 1.0f, 1.0f};
+Vec3 toScreen(const Vec3 &modelPos, const Transform &t, const Camera &camera) {
   Mat4 m = modelMat(t);
+  Mat4 view = viewMat(camera);
+  Mat4 projection = projectionMat(camera);
 
-  Mat4 view = lookAt({0, 0, 1}, t.position, {0, 1, 0});
-  Mat4 projection = perspective(std::numbers::pi_v<float> / 4.0f, static_cast<float>(w) / h, 0.1f, 10.0f);
   Vec4 clip = projection * view * m * Vec4{modelPos.x, modelPos.y, modelPos.z, 1.0f};
   Vec3 ndc = {clip.x / clip.w, clip.y / clip.w, clip.z / clip.w};
 
@@ -45,13 +42,27 @@ int main(int argc, char *argv[]) {
 
   Image framebuffer(w, h);
   Model model = loadModel(argv[1]);
-
   std::vector<float> zbuffer(w * h, std::numeric_limits<float>::max());
 
+  Transform t;
+  t.position = {0.0f, 0.0f, -2.0f};
+  t.rotation.y = rotationAngle;
+  t.scale = {1.0f, 1.0f, 1.0f};
+
+  Camera camera{
+    .eye = {0.0f, 0.0f, 1.0f},
+    .at = t.position,
+    .up = {0.0f, 1.0f, 0.0f},
+    .fovY = std::numbers::pi_v<float> / 4.0f,
+    .ar = static_cast<float>(w) / h,
+    .near = 0.1f,
+    .far = 10.0f
+  };
+
   for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
-    Vec3 screenPos0 = toScreen(model.verts[model.faces[i * 3]]);
-    Vec3 screenPos1 = toScreen(model.verts[model.faces[i * 3 + 1]]);
-    Vec3 screenPos2 = toScreen(model.verts[model.faces[i * 3 + 2]]);
+    Vec3 screenPos0 = toScreen(model.verts[model.faces[i * 3]], t, camera);
+    Vec3 screenPos1 = toScreen(model.verts[model.faces[i * 3 + 1]], t, camera);
+    Vec3 screenPos2 = toScreen(model.verts[model.faces[i * 3 + 2]], t, camera);
 
     Color c0{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
     Color c1{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
