@@ -22,6 +22,11 @@ Image zbufferView(const std::vector<float> &zbuffer, int w, int h) {
     zMax = std::max(zMax, z);
   }
 
+  // no depth values
+  if (zMin == std::numeric_limits<float>::max()) {
+    return zbufferImg;
+  }
+
   for (int y = 0; y < h; y++) {
     for (int x = 0; x < w; x++) {
       float z = zbuffer[y * w + x];
