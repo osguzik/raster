@@ -5,6 +5,7 @@
 #include "model.hpp"
 #include "raster/triangle.hpp"
 #include "raster/vertex.hpp"
+#include "vertex_transform.hpp"
 #include "zbuffer_view.hpp"
 
 #include <cstdint>
@@ -16,21 +17,6 @@
 
 constexpr int w = 1024;
 constexpr int h = 1024;
-
-constexpr float rotationAngle = std::numbers::pi_v<float> / 6.0f;
-
-Vec3 toScreen(const Vec3 &modelPos, const Transform &t, const Camera &camera) {
-  Mat4 m = modelMat(t);
-  Mat4 view = viewMat(camera);
-  Mat4 projection = projectionMat(camera);
-
-  Vec4 clip = projection * view * m * Vec4{modelPos.x, modelPos.y, modelPos.z, 1.0f};
-  Vec3 ndc = {clip.x / clip.w, clip.y / clip.w, clip.z / clip.w};
-
-  Mat4 vp = viewport(0, 0, w, h);
-  Vec4 screen = vp * Vec4{ndc.x, ndc.y, ndc.z, 1.0f};
-  return {screen.x, screen.y, screen.z};
-}
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
@@ -44,7 +30,7 @@ int main(int argc, char *argv[]) {
 
   Transform t;
   t.position = {0.0f, 0.0f, -2.0f};
-  t.rotation.y = rotationAngle;
+  t.rotation.y = std::numbers::pi_v<float> / 6.0f;
   t.scale = {1.0f, 1.0f, 1.0f};
 
   Camera camera{
@@ -57,18 +43,21 @@ int main(int argc, char *argv[]) {
     .far = 10.0f
   };
 
-  for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
-    Vec3 screenPos0 = toScreen(model.verts[model.faces[i * 3]], t, camera);
-    Vec3 screenPos1 = toScreen(model.verts[model.faces[i * 3 + 1]], t, camera);
-    Vec3 screenPos2 = toScreen(model.verts[model.faces[i * 3 + 2]], t, camera);
+  Mat4 mvp = projectionMat(camera) * viewMat(camera) * modelMat(t);
+  Mat4 vp = viewport(0, 0, w, h);
 
+  for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
     Color c0{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
     Color c1{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
     Color c2{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
 
-    ScreenVertex v0{screenPos0, c0};
-    ScreenVertex v1{screenPos1, c1};
-    ScreenVertex v2{screenPos2, c2};
+    ClipVertex clip0 = toClip(model.verts[model.faces[i * 3]], c0, mvp);
+    ClipVertex clip1 = toClip(model.verts[model.faces[i * 3 + 1]], c1, mvp);
+    ClipVertex clip2 = toClip(model.verts[model.faces[i * 3 + 2]], c2, mvp);
+
+    ScreenVertex v0 = toScreen(clip0, vp);
+    ScreenVertex v1 = toScreen(clip1, vp);
+    ScreenVertex v2 = toScreen(clip2, vp);
 
     triangle(v0, v1, v2, framebuffer, zbuffer);
   }
