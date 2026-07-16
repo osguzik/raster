@@ -1,9 +1,9 @@
-#include "vertex_transform.hpp"
+#include "render/vertex_transform.hpp"
 
 #include "image.hpp"
 #include "math/mat.hpp"
 #include "math/vec.hpp"
-#include "raster/vertex.hpp"
+#include "render/raster/vertex.hpp"
 
 ClipVertex toClip(const Vec3 &modelPos, const Color &color, const Mat4 &mvp) {
   Vec4 clip = mvp * Vec4{modelPos.x, modelPos.y, modelPos.z, 1.0f};

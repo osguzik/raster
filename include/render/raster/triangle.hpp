@@ -1,7 +1,7 @@
 #pragma once
 
 #include "image.hpp"
-#include "raster/vertex.hpp"
+#include "render/raster/vertex.hpp"
 
 #include <vector>
 

@@ -3,10 +3,10 @@
 #include "math/transform.hpp"
 #include "math/vec.hpp"
 #include "model.hpp"
-#include "raster/triangle.hpp"
-#include "raster/vertex.hpp"
-#include "vertex_transform.hpp"
-#include "zbuffer_view.hpp"
+#include "render/raster/triangle.hpp"
+#include "render/raster/vertex.hpp"
+#include "render/vertex_transform.hpp"
+#include "render/zbuffer_view.hpp"
 
 #include <cstdint>
 #include <cstdlib>

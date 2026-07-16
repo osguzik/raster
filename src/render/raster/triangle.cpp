@@ -1,7 +1,7 @@
-#include "raster/triangle.hpp"
+#include "render/raster/triangle.hpp"
 
 #include "image.hpp"
-#include "raster/vertex.hpp"
+#include "render/raster/vertex.hpp"
 
 #include <algorithm>
 #include <cmath>
