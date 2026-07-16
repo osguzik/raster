@@ -14,15 +14,6 @@ inline Mat4 translate(Vec3 t) {
   }};
 }
 
-inline Mat4 scale(Vec3 s) {
-  return Mat4{{
-    {s.x, 0, 0, 0},
-    {0, s.y, 0, 0},
-    {0, 0, s.z, 0},
-    {0, 0, 0, 1}
-  }};
-}
-
 inline Mat4 rotateX(float rad) {
   return Mat4{{
   {1, 0, 0, 0},
@@ -47,6 +38,15 @@ inline Mat4 rotateZ(float rad) {
   {std::sin(rad), std::cos(rad), 0, 0},
   {0, 0, 1, 0},
   {0, 0, 0, 1}
+  }};
+}
+
+inline Mat4 scale(Vec3 s) {
+  return Mat4{{
+    {s.x, 0, 0, 0},
+    {0, s.y, 0, 0},
+    {0, 0, s.z, 0},
+    {0, 0, 0, 1}
   }};
 }
 
