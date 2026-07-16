@@ -27,11 +27,9 @@ Vec3 toScreen(const Vec3 &modelPos, const Transform &t, const Camera &camera) {
   Vec4 clip = projection * view * m * Vec4{modelPos.x, modelPos.y, modelPos.z, 1.0f};
   Vec3 ndc = {clip.x / clip.w, clip.y / clip.w, clip.z / clip.w};
 
-  return {
-    (ndc.x + 1) * w / 2,
-    h - ((ndc.y + 1) * h / 2),
-    ndc.z
-  };
+  Mat4 vp = viewport(0, 0, w, h);
+  Vec4 screen = vp * Vec4{ndc.x, ndc.y, ndc.z, 1.0f};
+  return {screen.x, screen.y, screen.z};
 }
 
 int main(int argc, char *argv[]) {

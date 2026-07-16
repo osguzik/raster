@@ -84,3 +84,12 @@ inline Mat4 perspective(float fovY, float ar, float near, float far) {
   }};
 }
 
+inline Mat4 viewport(int x, int y, int w, int h) {
+  return Mat4{{
+  {w / 2.0f, 0, 0, x + w / 2.0f},
+  {0, -h / 2.0f, 0, y + h / 2.0f},
+  {0, 0, 1, 0},
+  {0, 0, 0, 1}
+  }};
+}
+
