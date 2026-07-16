@@ -3,7 +3,12 @@
 #include "image.hpp"
 #include "math/vec.hpp"
 
-struct Vertex {
+struct ClipVertex {
+  Vec4 pos;
+  Color color;
+};
+
+struct ScreenVertex {
   Vec3 pos;
   Color color;
 };

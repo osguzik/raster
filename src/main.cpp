@@ -66,9 +66,9 @@ int main(int argc, char *argv[]) {
     Color c1{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
     Color c2{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
 
-    Vertex v0{screenPos0, c0};
-    Vertex v1{screenPos1, c1};
-    Vertex v2{screenPos2, c2};
+    ScreenVertex v0{screenPos0, c0};
+    ScreenVertex v1{screenPos1, c1};
+    ScreenVertex v2{screenPos2, c2};
 
     triangle(v0, v1, v2, framebuffer, zbuffer);
   }
