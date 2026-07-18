@@ -1,6 +1,6 @@
 # Software Rasterizer
 
-A CPU software rasterizer written in C++ to better understand the inner workings of the GPU and its rendering pipeline.
+A CPU-only rasterizer written in C++20 to better understand the inner workings of the GPU and its rendering pipeline.
 
 ## References
 
@@ -11,7 +11,9 @@ A CPU software rasterizer written in C++ to better understand the inner workings
 ### Articles and Tutorials
 
 - [tinyrenderer](https://haqr.eu/tinyrenderer/)
-- [Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
-- [Scratchapixel](https://www.scratchapixel.com/lessons/3d-basic-rendering/rasterization-practical-implementation/rasterization-practical-implementation.html)
-- [Triangle rasterization in practice](https://fgiesen.wordpress.com/2013/02/08/triangle-rasterization-in-practice/)
+- [Scratchapixel](https://www.scratchapixel.com/lessons/3d-basic-rendering/rasterization-practical-implementation/overview-rasterization-algorithm.html)
+- [Fryzek Concepts: Rasterizing Triangles](https://fryzekconcepts.com/notes/rasterizing-triangles.html)
+- [LearnOpenGL](https://learnopengl.com/)
+- [songho.ca](https://www.songho.ca/opengl/)
+- [Khronos OpenGL Refpages](https://registry.khronos.org/OpenGL-Refpages/gl4/)
 
