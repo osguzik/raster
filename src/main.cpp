@@ -1,5 +1,6 @@
 #include "camera.hpp"
 #include "image.hpp"
+#include "math/mat.hpp"
 #include "math/transform.hpp"
 #include "math/vec.hpp"
 #include "model.hpp"
@@ -18,6 +19,11 @@ constexpr int w = 1024;
 constexpr int h = 1024;
 
 constexpr Color white = {255, 255, 255};
+
+Vec3 transformPoint(const Mat4 &m, const Vec3 &point) {
+  Vec4 result = m * Vec4{point.x, point.y, point.z, 1.0f};
+  return {result.x, result.y, result.z};
+}
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
@@ -48,18 +54,29 @@ int main(int argc, char *argv[]) {
   Mat4 vp = viewport(0, 0, w, h);
 
   Color baseColor = white;
-  float ambient = 0.2f;
+  float ambient = 0.1f;
+  Vec3 light = normalize(Vec3{0.0f, 0.0f, 1.0f});
 
   for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
-    ClipVertex clip0 = toClip(model.verts[model.faces[i * 3]], mvp);
-    ClipVertex clip1 = toClip(model.verts[model.faces[i * 3 + 1]], mvp);
-    ClipVertex clip2 = toClip(model.verts[model.faces[i * 3 + 2]], mvp);
+    Vec3 modelPos0 = model.verts[model.faces[i * 3]];
+    Vec3 modelPos1 = model.verts[model.faces[i * 3 + 1]];
+    Vec3 modelPos2 = model.verts[model.faces[i * 3 + 2]];
+
+    Vec3 worldPos0 = transformPoint(modelMat(t), modelPos0);
+    Vec3 worldPos1 = transformPoint(modelMat(t), modelPos1);
+    Vec3 worldPos2 = transformPoint(modelMat(t), modelPos2);
+
+    Vec3 normal = normalize(cross(worldPos1 - worldPos0, worldPos2 - worldPos0));
+
+    ClipVertex clip0 = toClip(modelPos0, mvp);
+    ClipVertex clip1 = toClip(modelPos1, mvp);
+    ClipVertex clip2 = toClip(modelPos2, mvp);
 
     ScreenVertex v0 = toScreen(clip0, vp);
     ScreenVertex v1 = toScreen(clip1, vp);
     ScreenVertex v2 = toScreen(clip2, vp);
 
-    triangle(v0, v1, v2, framebuffer, zbuffer, baseColor, ambient);
+    triangle(v0, v1, v2, framebuffer, zbuffer, normal, light, baseColor, ambient);
   }
 
   Image zbufferImg = zbufferView(zbuffer, w, h);
