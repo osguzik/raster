@@ -8,7 +8,6 @@
 #include "render/vertex_transform.hpp"
 #include "render/zbuffer_view.hpp"
 
-#include <cstdint>
 #include <cstdlib>
 #include <iostream>
 #include <limits>
@@ -17,6 +16,8 @@
 
 constexpr int w = 1024;
 constexpr int h = 1024;
+
+constexpr Color white = {255, 255, 255};
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
@@ -46,20 +47,19 @@ int main(int argc, char *argv[]) {
   Mat4 mvp = projectionMat(camera) * viewMat(camera) * modelMat(t);
   Mat4 vp = viewport(0, 0, w, h);
 
-  for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
-    Color c0{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
-    Color c1{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
-    Color c2{static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255), static_cast<std::uint8_t>(std::rand() % 255)};
+  Color baseColor = white;
+  float ambient = 0.2f;
 
-    ClipVertex clip0 = toClip(model.verts[model.faces[i * 3]], c0, mvp);
-    ClipVertex clip1 = toClip(model.verts[model.faces[i * 3 + 1]], c1, mvp);
-    ClipVertex clip2 = toClip(model.verts[model.faces[i * 3 + 2]], c2, mvp);
+  for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
+    ClipVertex clip0 = toClip(model.verts[model.faces[i * 3]], mvp);
+    ClipVertex clip1 = toClip(model.verts[model.faces[i * 3 + 1]], mvp);
+    ClipVertex clip2 = toClip(model.verts[model.faces[i * 3 + 2]], mvp);
 
     ScreenVertex v0 = toScreen(clip0, vp);
     ScreenVertex v1 = toScreen(clip1, vp);
     ScreenVertex v2 = toScreen(clip2, vp);
 
-    triangle(v0, v1, v2, framebuffer, zbuffer);
+    triangle(v0, v1, v2, framebuffer, zbuffer, baseColor, ambient);
   }
 
   Image zbufferImg = zbufferView(zbuffer, w, h);
