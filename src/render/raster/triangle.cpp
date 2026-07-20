@@ -14,7 +14,7 @@ float edge(const Vec3 &p, const Vec3 &a, const Vec3 &dir) {
 }
 
 void triangle(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex &v2, Image &img, std::vector<float> &zbuffer,
-              const Vec3 &normal, const Vec3 &lightDir, const Vec3 &viewDir, const Color &baseColor, float ambient, float shininess) {
+              const Vec3 &normal, const Lighting &lighting, const Color &baseColor) {
   const Vec3 &p0 = v0.pos;
   const Vec3 &p1 = v1.pos;
   const Vec3 &p2 = v2.pos;
@@ -44,7 +44,7 @@ void triangle(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex
   float rowE1 = edge(start, p1, dir1);
   float rowE2 = edge(start, p2, dir2);
 
-  Color shadeColor = shade(normal, lightDir, viewDir, baseColor, ambient, shininess);
+  Color shadeColor = shade(normal, lighting, baseColor);
 
   for(int y = minY; y <= maxY; y++) {
     float e0 = rowE0, e1 = rowE1, e2 = rowE2;

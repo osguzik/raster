@@ -6,6 +6,7 @@
 #include "model.hpp"
 #include "render/raster/triangle.hpp"
 #include "render/raster/vertex.hpp"
+#include "render/shading.hpp"
 #include "render/vertex_transform.hpp"
 #include "render/zbuffer_view.hpp"
 
@@ -53,10 +54,11 @@ int main(int argc, char *argv[]) {
   Mat4 mvp = projectionMat(camera) * viewMat(camera) * modelMat(t);
   Mat4 vp = viewport(0, 0, w, h);
 
+  Lighting lighting;
+  lighting.lightDir = normalize(Vec3{0.0f, 0.0f, 1.0f});
+  lighting.ambient = 0.1f;
+  lighting.shininess = 32.0f;
   Color baseColor = white;
-  float ambient = 0.1f;
-  Vec3 lightDir = normalize(Vec3{0.0f, 0.0f, 1.0f});
-  float shininess = 32.0f;
 
   for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
     Vec3 modelPos0 = model.verts[model.faces[i * 3]];
@@ -70,7 +72,7 @@ int main(int argc, char *argv[]) {
     Vec3 normal = normalize(cross(worldPos1 - worldPos0, worldPos2 - worldPos0));
 
     Vec3 centroid = (worldPos0 + worldPos1 + worldPos2) / 3.0f;
-    Vec3 viewDir = normalize(camera.eye - centroid);
+    lighting.viewDir = normalize(camera.eye - centroid);
 
     ClipVertex clip0 = toClip(modelPos0, mvp);
     ClipVertex clip1 = toClip(modelPos1, mvp);
@@ -80,7 +82,7 @@ int main(int argc, char *argv[]) {
     ScreenVertex v1 = toScreen(clip1, vp);
     ScreenVertex v2 = toScreen(clip2, vp);
 
-    triangle(v0, v1, v2, framebuffer, zbuffer, normal, lightDir, viewDir, baseColor, ambient, shininess);
+    triangle(v0, v1, v2, framebuffer, zbuffer, normal, lighting, baseColor);
   }
 
   Image zbufferImg = zbufferView(zbuffer, w, h);

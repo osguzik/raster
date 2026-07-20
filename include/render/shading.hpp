@@ -3,5 +3,13 @@
 #include "image.hpp"
 #include "math/vec.hpp"
 
-Color shade(const Vec3 &normal, const Vec3 &lightDir, const Vec3 &viewDir, const Color &baseColor, float ambient, float shine);
+struct Lighting {
+  Vec3 lightDir;
+  Vec3 viewDir;
+  float ambient;
+  float shininess;
+};
+
+Color shade(const Vec3 &normal, const Lighting &lighting, const Color &baseColor);
+
 
