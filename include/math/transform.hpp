@@ -101,7 +101,36 @@ inline Mat3 upperLeft3(const Mat4 &m) {
   }};
 }
 
-inline Mat3 transpose() {}
+inline Mat3 transpose(const Mat3 &m) {
+  return Mat3{{
+    {m.rows[0].x, m.rows[1].x, m.rows[2].x},
+    {m.rows[0].y, m.rows[1].y, m.rows[2].y},
+    {m.rows[0].z, m.rows[1].z, m.rows[2].z}
+  }};
+}
 
-inline Mat3 inverse() {}
+inline Mat3 inverse(const Mat3 &m) {
+  float a = m.rows[0].x, b = m.rows[0].y, c = m.rows[0].z;
+  float d = m.rows[1].x, e = m.rows[1].y, f = m.rows[1].z;
+  float g = m.rows[2].x, h = m.rows[2].y, i = m.rows[2].z;
+
+  float A = e * i - f * h;
+  float B = f * g - d * i;
+  float C = d * h - e * g;
+  float D = c * h - b * i;
+  float E = a * i - c * g;
+  float F = b * g - a * h;
+  float G = b * f - c * e;
+  float H = c * d - a * f;
+  float I = a * e - b * d;
+
+  float det = a * A + b * B + c * C;
+  float invDet = 1.0f / det;
+
+  return Mat3{{
+  {A * invDet, D * invDet, G * invDet},
+  {B * invDet, E * invDet, H * invDet},
+  {C * invDet, F * invDet, I * invDet}
+  }};
+}
 
