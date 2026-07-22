@@ -1,5 +1,7 @@
 #include "model.hpp"
 
+#include "math/vec.hpp"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -23,11 +25,26 @@ Model loadModel(const std::string& filename) {
       Vec3 v;
       iss >> v.x >> v.y >> v.z;
       model.verts.push_back(v);
+    } else if (keyword == "vn") {
+      Vec3 normal;
+      iss >> normal.x >> normal.y >> normal.z;
+      model.normals.push_back(normalize(normal));
     } else if (keyword == "f") {
       std::string s;
       for (int i = 0; i < 3; i++) {
         iss >> s;
-        model.faces.push_back(std::stoi(s) - 1);
+        std::istringstream fss(s);
+        std::string field;
+        int f, n;
+        int fieldIdx = 0;
+        while (std::getline(fss, field, '/')) {
+          int val = field.empty() ? 0 : std::stoi(field);
+          if (fieldIdx == 0) { f = val; }
+          else if (fieldIdx == 2) { n = val; }
+          fieldIdx++;
+        }
+        model.faces.push_back(f - 1);
+        model.faceNormals.push_back(n - 1);
       }
     }
   }
