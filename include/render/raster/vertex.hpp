@@ -4,9 +4,11 @@
 
 struct ClipVertex {
   Vec4 pos;
+  Vec3 normal;
 };
 
 struct ScreenVertex {
   Vec3 pos;
+  Vec3 normal;
 };
 

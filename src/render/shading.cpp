@@ -7,7 +7,7 @@
 #include <cmath>
 #include <cstdint>
 
-Color shade(const Vec3 &normal, const Lighting &lighting, const Color &baseColor) {
+Color blinnPhong(const Vec3 &normal, const Lighting &lighting, const Color &baseColor) {
   float diffuse = std::max(dot(normal, lighting.lightDir), 0.0f);
 
   Vec3 halfway = normalize(lighting.lightDir + lighting.viewDir);

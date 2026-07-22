@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
   Mat4 modelTransform = modelMat(t);
   Mat4 mvp = projectionMat(camera) * viewMat(camera) * modelTransform;
   Mat4 vp = viewport(0, 0, w, h);
-  Mat3 normalMat = transpose(inverse(upperLeft3(modelTransform));
+  Mat3 normalMat = transpose(inverse(upperLeft3(modelTransform)));
 
   Lighting lighting;
   lighting.lightDir = normalize(Vec3{0.0f, 0.0f, 1.0f});
@@ -71,20 +71,18 @@ int main(int argc, char *argv[]) {
     Vec3 worldPos1 = transformPoint(modelMat(t), modelPos1);
     Vec3 worldPos2 = transformPoint(modelMat(t), modelPos2);
 
-    Vec3 normal = normalize(cross(worldPos1 - worldPos0, worldPos2 - worldPos0));
-
     Vec3 centroid = (worldPos0 + worldPos1 + worldPos2) / 3.0f;
     lighting.viewDir = normalize(camera.eye - centroid);
 
-    ClipVertex clip0 = toClip(modelPos0, mvp);
-    ClipVertex clip1 = toClip(modelPos1, mvp);
-    ClipVertex clip2 = toClip(modelPos2, mvp);
+    ClipVertex clip0 = toClip(modelPos0, model.normals[model.faceNormals[i * 3]], mvp, normalMat);
+    ClipVertex clip1 = toClip(modelPos1, model.normals[model.faceNormals[i * 3 + 1]], mvp, normalMat);
+    ClipVertex clip2 = toClip(modelPos2, model.normals[model.faceNormals[i * 3 + 2]], mvp, normalMat);
 
     ScreenVertex v0 = toScreen(clip0, vp);
     ScreenVertex v1 = toScreen(clip1, vp);
     ScreenVertex v2 = toScreen(clip2, vp);
 
-    triangle(v0, v1, v2, framebuffer, zbuffer, normal, lighting, baseColor);
+    triangle(v0, v1, v2, framebuffer, zbuffer, lighting, baseColor);
   }
 
   Image zbufferImg = zbufferView(zbuffer, w, h);

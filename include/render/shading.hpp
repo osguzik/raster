@@ -10,6 +10,5 @@ struct Lighting {
   float shininess;
 };
 
-Color shade(const Vec3 &normal, const Lighting &lighting, const Color &baseColor);
-
+Color blinnPhong(const Vec3 &normal, const Lighting &lighting, const Color &baseColor);
 
