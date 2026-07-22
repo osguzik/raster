@@ -93,3 +93,15 @@ inline Mat4 viewport(int x, int y, int w, int h) {
   }};
 }
 
+inline Mat3 upperLeft3(const Mat4 &m) {
+  return Mat3{{
+  {m.rows[0].x, m.rows[0].y, m.rows[0].z},
+  {m.rows[1].x, m.rows[1].y, m.rows[1].z},
+  {m.rows[2].x, m.rows[2].y, m.rows[2].z}
+  }};
+}
+
+inline Mat3 transpose() {}
+
+inline Mat3 inverse() {}
+

@@ -51,8 +51,10 @@ int main(int argc, char *argv[]) {
     .far = 10.0f
   };
 
-  Mat4 mvp = projectionMat(camera) * viewMat(camera) * modelMat(t);
+  Mat4 modelTransform = modelMat(t);
+  Mat4 mvp = projectionMat(camera) * viewMat(camera) * modelTransform;
   Mat4 vp = viewport(0, 0, w, h);
+  Mat3 normalMat = transpose(inverse(upperLeft3(modelTransform));
 
   Lighting lighting;
   lighting.lightDir = normalize(Vec3{0.0f, 0.0f, 1.0f});
