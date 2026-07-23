@@ -14,7 +14,7 @@ float edge(const Vec3 &p, const Vec3 &a, const Vec3 &dir) {
 }
 
 void triangle(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex &v2, Image &img, std::vector<float> &zbuffer,
-              const Lighting &lighting, const Color &baseColor) {
+              const Lighting &lighting, const Material &material) {
   const Vec3 &p0 = v0.pos;
   const Vec3 &p1 = v1.pos;
   const Vec3 &p2 = v2.pos;
@@ -57,7 +57,7 @@ void triangle(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex
         if (z < zbuffer[idx]) {
           zbuffer[idx] = z;
           Vec3 normal = normalize(v0.normal * w0 + v1.normal * w1 + v2.normal * w2);
-          img.set(x, y, blinnPhong(normal, lighting, baseColor));
+          img.set(x, y, blinnPhong(normal, lighting, material));
         }
       }
 

@@ -59,8 +59,11 @@ int main(int argc, char *argv[]) {
   Lighting lighting;
   lighting.lightDir = normalize(Vec3{0.0f, 0.0f, 1.0f});
   lighting.ambient = 0.1f;
-  lighting.shininess = 32.0f;
-  Color baseColor = white;
+
+  Material material;
+  material.baseColor = white;
+  material.specularStrength = 4.0f;
+  material.shininess = 32.0f;
 
   for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
     Vec3 modelPos0 = model.verts[model.faces[i * 3]];
@@ -82,7 +85,7 @@ int main(int argc, char *argv[]) {
     ScreenVertex v1 = toScreen(clip1, vp);
     ScreenVertex v2 = toScreen(clip2, vp);
 
-    triangle(v0, v1, v2, framebuffer, zbuffer, lighting, baseColor);
+    triangle(v0, v1, v2, framebuffer, zbuffer, lighting, material);
   }
 
   Image zbufferImg = zbufferView(zbuffer, w, h);
