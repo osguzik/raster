@@ -9,9 +9,12 @@
 
 Color blinnPhong(const Vec3 &normal, const Lighting &lighting, const Color &baseColor) {
   float diffuse = std::max(dot(normal, lighting.lightDir), 0.0f);
+  float specular = 0.0f;
 
-  Vec3 halfway = normalize(lighting.lightDir + lighting.viewDir);
-  float specular = std::pow(std::max(dot(normal, halfway), 0.0f), lighting.shininess);
+  if (diffuse > 0.0f) {
+    Vec3 halfway = normalize(lighting.lightDir + lighting.viewDir);
+    specular = std::pow(std::max(dot(normal, halfway), 0.0f), lighting.shininess);
+  }
 
   float intensity = std::min(lighting.ambient + diffuse + specular, 1.0f);
   return Color{
