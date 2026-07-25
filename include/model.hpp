@@ -8,8 +8,10 @@
 struct Model {
   std::vector<Vec3> verts;
   std::vector<int> faces;
+  std::vector<Vec2> uvs;
+  std::vector<int> uvFaces;
   std::vector<Vec3> normals;
-  std::vector<int> faceNormals;
+  std::vector<int> normalFaces;
 };
 
 Model loadModel(const std::string& filename);

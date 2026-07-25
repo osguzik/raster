@@ -29,24 +29,35 @@ Model loadModel(const std::string& filename) {
       Vec3 normal;
       iss >> normal.x >> normal.y >> normal.z;
       model.normals.push_back(normalize(normal));
+    } else if (keyword == "vt") {
+      Vec2 uv;
+      iss >> uv.x >> uv.y;
+      model.uvs.push_back(uv);
     } else if (keyword == "f") {
       std::string s;
       for (int i = 0; i < 3; i++) {
         iss >> s;
         std::istringstream fss(s);
         std::string field;
-        int f, n;
+        int f, t, n;
         int fieldIdx = 0;
         while (std::getline(fss, field, '/')) {
           int val = field.empty() ? 0 : std::stoi(field);
           if (fieldIdx == 0) { f = val; }
+          else if (fieldIdx == 1) { t = val; }
           else if (fieldIdx == 2) { n = val; }
           fieldIdx++;
         }
         model.faces.push_back(f - 1);
-        model.faceNormals.push_back(n - 1);
+        model.uvFaces.push_back(t - 1);
+        model.normalFaces.push_back(n - 1);
       }
     }
+  }
+
+  if (model.uvs.empty()) {
+    model.uvs.push_back(Vec2{0.0f, 0.0f});
+    model.uvFaces.assign(model.faces.size(), 0);
   }
 
   return model;

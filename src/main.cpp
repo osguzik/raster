@@ -77,9 +77,9 @@ int main(int argc, char *argv[]) {
     Vec3 centroid = (worldPos0 + worldPos1 + worldPos2) / 3.0f;
     lighting.viewDir = normalize(camera.eye - centroid);
 
-    ClipVertex clip0 = toClip(modelPos0, model.normals[model.faceNormals[i * 3]], mvp, normalMat);
-    ClipVertex clip1 = toClip(modelPos1, model.normals[model.faceNormals[i * 3 + 1]], mvp, normalMat);
-    ClipVertex clip2 = toClip(modelPos2, model.normals[model.faceNormals[i * 3 + 2]], mvp, normalMat);
+    ClipVertex clip0 = toClip(modelPos0, model.normals[model.normalFaces[i * 3]], model.uvs[model.uvFaces[i * 3]], mvp, normalMat);
+    ClipVertex clip1 = toClip(modelPos1, model.normals[model.normalFaces[i * 3 + 1]], model.uvs[model.uvFaces[i * 3 + 1]], mvp, normalMat);
+    ClipVertex clip2 = toClip(modelPos2, model.normals[model.normalFaces[i * 3 + 2]], model.uvs[model.uvFaces[i * 3 + 2]], mvp, normalMat);
 
     ScreenVertex v0 = toScreen(clip0, vp);
     ScreenVertex v1 = toScreen(clip1, vp);
