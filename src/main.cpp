@@ -4,6 +4,7 @@
 #include "math/transform.hpp"
 #include "math/vec.hpp"
 #include "model.hpp"
+#include "render/material.hpp"
 #include "render/raster/triangle.hpp"
 #include "render/raster/vertex.hpp"
 #include "render/shading.hpp"

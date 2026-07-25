@@ -2,6 +2,7 @@
 
 #include "image.hpp"
 #include "math/vec.hpp"
+#include "render/material.hpp"
 #include "render/raster/vertex.hpp"
 #include "render/shading.hpp"
 

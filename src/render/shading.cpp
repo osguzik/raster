@@ -2,6 +2,7 @@
 
 #include "image.hpp"
 #include "math/vec.hpp"
+#include "render/material.hpp"
 
 #include <algorithm>
 #include <cmath>
