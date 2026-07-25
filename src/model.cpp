@@ -2,6 +2,7 @@
 
 #include "math/vec.hpp"
 
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -12,7 +13,7 @@ Model loadModel(const std::string& filename) {
   std::ifstream in(filename);
   if (!in) {
     std::cerr << "error: failed to read file " << filename << "\n";
-    return model;
+    exit(1);
   }
 
   std::string line;
@@ -55,9 +56,16 @@ Model loadModel(const std::string& filename) {
     }
   }
 
+  // uvs are optional
   if (model.uvs.empty()) {
     model.uvs.push_back(Vec2{0.0f, 0.0f});
     model.uvFaces.assign(model.faces.size(), 0);
+  }
+
+  // normals are required
+  if (model.normals.empty()) {
+    std::cerr << "error: file " << filename << " has no vertex normals (vn)\n";
+    exit(1);
   }
 
   return model;
