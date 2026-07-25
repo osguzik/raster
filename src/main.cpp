@@ -37,13 +37,13 @@ int main(int argc, char *argv[]) {
   std::vector<float> zbuffer(w * h, std::numeric_limits<float>::max());
 
   Transform t;
-  t.position = {0.0f, 0.0f, -2.0f};
-  t.rotation.y = std::numbers::pi_v<float> / 6.0f;
-  t.scale = {1.0f, 1.0f, 1.0f};
+  t.position = {0.0f, -0.5f, -2.0f};
+  t.rotation.y = std::numbers::pi_v<float> * 2.0f;
+  t.scale = {0.2f, 0.2f, 0.2f};
 
   Camera camera{
     .eye = {0.0f, 0.0f, 1.0f},
-    .at = t.position,
+    .at = {0.0f, 0.0f, -2.0f},
     .up = {0.0f, 1.0f, 0.0f},
     .fovY = std::numbers::pi_v<float> / 4.0f,
     .ar = static_cast<float>(w) / h,
