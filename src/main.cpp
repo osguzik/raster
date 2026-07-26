@@ -60,11 +60,12 @@ int main(int argc, char *argv[]) {
   Lighting lighting;
   lighting.lightDir = normalize(Vec3{0.0f, 0.0f, 1.0f});
   lighting.ambient = 0.1f;
+  lighting.lightColor = white;
 
   Material material;
-  material.baseColor = white;
+  material.baseColor = {210, 30, 70};
   material.specularStrength = 4.0f;
-  material.shininess = 32.0f;
+  material.shininess = 160.0f;
 
   for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
     Vec3 modelPos0 = model.verts[model.faces[i * 3]];
