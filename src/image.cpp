@@ -1,5 +1,6 @@
 #include "image.hpp"
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -23,6 +24,12 @@ void Image::set(int x, int y, const Color &color) {
   row[i] = color.r;
   row[i + 1] = color.g;
   row[i + 2] = color.b;
+}
+
+Color Image::sample(float u, float v) const {
+  int x = std::clamp(static_cast<int>(u * w), 0, w - 1);
+  int y = std::clamp(static_cast<int>((1.0f - v) * h), 0, h - 1);
+  return get(x, y);
 }
 
 namespace ppm {

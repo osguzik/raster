@@ -17,6 +17,7 @@ struct Image {
 
   Color get(int x, int y) const;
   void set(int x, int y, const Color &color);
+  Color sample(float u, float v) const;
 };
 
 namespace ppm {
