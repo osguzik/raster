@@ -14,5 +14,5 @@ struct Model {
   std::vector<int> normalFaces;
 };
 
-Model loadModel(const std::string& filename);
+Model loadModel(const std::string& filename, bool shouldRecalcNormals = false);
 

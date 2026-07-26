@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
   }
 
   Image framebuffer(w, h);
-  Model model = loadModel(argv[1]);
+  Model model = loadModel(argv[1], true);
   std::vector<float> zbuffer(w * h, std::numeric_limits<float>::max());
 
   Transform t;
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
   Material material;
   material.baseColor = {210, 30, 70};
   material.specularStrength = 4.0f;
-  material.shininess = 160.0f;
+  material.shininess = 128.0f;
 
   for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
     Vec3 modelPos0 = model.verts[model.faces[i * 3]];

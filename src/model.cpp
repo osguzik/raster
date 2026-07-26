@@ -8,7 +8,29 @@
 #include <sstream>
 #include <string>
 
-Model loadModel(const std::string& filename) {
+void recalcNormals(Model &model) {
+  size_t faceCount = model.faces.size() / 3;
+  std::vector<Vec3> vertexNormals(model.verts.size(), Vec3{0.0f, 0.0f, 0.0f});
+
+  for (size_t i = 0; i < faceCount; i++) {
+    int v0 = model.faces[i * 3], v1 = model.faces[i * 3 + 1], v2 = model.faces[i * 3 + 2];
+    Vec3 edge1 = model.verts[v1] - model.verts[v0];
+    Vec3 edge2 = model.verts[v2] - model.verts[v0];
+    Vec3 faceNormal = cross(edge1, edge2);
+    vertexNormals[v0] = vertexNormals[v0] + faceNormal;
+    vertexNormals[v1] = vertexNormals[v1] + faceNormal;
+    vertexNormals[v2] = vertexNormals[v2] + faceNormal;
+  }
+
+  for (Vec3 &n : vertexNormals) {
+    n = normalize(n);
+  }
+
+  model.normals = vertexNormals;
+  model.normalFaces = model.faces;
+}
+
+Model loadModel(const std::string& filename, bool shouldRecalcNormals) {
   Model model;
   std::ifstream in(filename);
   if (!in) {
@@ -63,9 +85,13 @@ Model loadModel(const std::string& filename) {
   }
 
   // normals are required
-  if (model.normals.empty()) {
+  if (model.normals.empty() && !shouldRecalcNormals) {
     std::cerr << "error: file " << filename << " has no vertex normals (vn)\n";
     exit(1);
+  }
+
+  if (shouldRecalcNormals) {
+    recalcNormals(model);
   }
 
   return model;
