@@ -64,6 +64,8 @@ int main(int argc, char *argv[]) {
 
   Material material;
   material.baseColor = {210, 30, 70};
+  Image checker = checkerTexture(128, 2);
+  material.texture = &checker;
   material.specularStrength = 4.0f;
   material.shininess = 128.0f;
 

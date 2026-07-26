@@ -58,7 +58,8 @@ void triangle(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex
         if (z < zbuffer[idx]) {
           zbuffer[idx] = z;
           Vec3 normal = normalize(v0.normal * w0 + v1.normal * w1 + v2.normal * w2);
-          img.set(x, y, blinnPhong(normal, lighting, material));
+          Vec2 uv = v0.uv * w0 + v1.uv * w1 + v2.uv * w2;
+          img.set(x, y, blinnPhong(normal, uv, lighting, material));
         }
       }
 

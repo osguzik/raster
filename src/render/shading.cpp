@@ -14,7 +14,7 @@ std::uint8_t shadeColor(std::uint8_t baseColor, std::uint8_t lightColor, float s
   return static_cast<std::uint8_t>(combined * 255.0f);
 }
 
-Color blinnPhong(const Vec3 &normal, const Lighting &lighting, const Material &material) {
+Color blinnPhong(const Vec3 &normal, const Vec2 &uv, const Lighting &lighting, const Material &material) {
   float diffuse = std::max(dot(normal, lighting.lightDir), 0.0f);
   float specular = 0.0f;
 
@@ -24,10 +24,11 @@ Color blinnPhong(const Vec3 &normal, const Lighting &lighting, const Material &m
   }
 
   float intensity = std::min(lighting.ambient + diffuse, 1.0f);
+  Color surface = material.texture ? material.texture->sample(uv.x, uv.y) : material.baseColor;
   return Color{
-    shadeColor(material.baseColor.r, lighting.lightColor.r, specular, intensity),
-    shadeColor(material.baseColor.g, lighting.lightColor.g, specular, intensity),
-    shadeColor(material.baseColor.b, lighting.lightColor.b, specular, intensity)
+    shadeColor(surface.r, lighting.lightColor.r, specular, intensity),
+    shadeColor(surface.g, lighting.lightColor.g, specular, intensity),
+    shadeColor(surface.b, lighting.lightColor.b, specular, intensity)
   };
 }
 
