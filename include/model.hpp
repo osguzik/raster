@@ -12,6 +12,7 @@ struct Model {
   std::vector<int> uvFaces;
   std::vector<Vec3> normals;
   std::vector<int> normalFaces;
+  bool uvsPresent = false;
 };
 
 Model loadModel(const std::string& filename, bool shouldRecalcNormals = false);

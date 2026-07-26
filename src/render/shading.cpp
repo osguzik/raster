@@ -8,7 +8,7 @@
 #include <cmath>
 #include <cstdint>
 
-std::uint8_t shadeColor(std::uint8_t baseColor, std::uint8_t lightColor, float specular, float intensity) {
+static std::uint8_t shadeColor(std::uint8_t baseColor, std::uint8_t lightColor, float specular, float intensity) {
   float combined = (baseColor / 255.0f) * (lightColor / 255.0f) * intensity + specular;
   combined = std::clamp(combined, 0.0f, 1.0f);
   return static_cast<std::uint8_t>(combined * 255.0f);

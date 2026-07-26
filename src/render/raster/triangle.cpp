@@ -10,7 +10,7 @@
 #include <cmath>
 #include <vector>
 
-float edge(const Vec3 &p, const Vec3 &a, const Vec3 &dir) {
+static float edge(const Vec3 &p, const Vec3 &a, const Vec3 &dir) {
   return (p.x - a.x) * dir.y - (p.y - a.y) * dir.x;
 }
 

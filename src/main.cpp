@@ -64,10 +64,13 @@ int main(int argc, char *argv[]) {
 
   Material material;
   material.baseColor = {210, 30, 70};
-  Image checker = checkerTexture(128, 2);
-  material.texture = &checker;
   material.specularStrength = 4.0f;
   material.shininess = 128.0f;
+
+  Image checker = checkerTexture(128, 2);
+  if (model.uvsPresent) {
+    material.texture = &checker;
+  }
 
   for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
     Vec3 modelPos0 = model.verts[model.faces[i * 3]];

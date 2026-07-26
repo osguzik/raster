@@ -79,6 +79,7 @@ Model loadModel(const std::string& filename, bool shouldRecalcNormals) {
   }
 
   // uvs are optional
+  model.uvsPresent = !model.uvs.empty();
   if (model.uvs.empty()) {
     model.uvs.push_back(Vec2{0.0f, 0.0f});
     model.uvFaces.assign(model.faces.size(), 0);
