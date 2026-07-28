@@ -57,23 +57,28 @@ Model loadModel(const std::string& filename, bool shouldRecalcNormals) {
       iss >> uv.x >> uv.y;
       model.uvs.push_back(uv);
     } else if (keyword == "f") {
+      std::vector<std::array<int, 3>> verts;
       std::string s;
-      for (int i = 0; i < 3; i++) {
-        iss >> s;
+
+      while (iss >> s) {
         std::istringstream fss(s);
         std::string field;
-        int f, t, n;
-        int fieldIdx = 0;
-        while (std::getline(fss, field, '/')) {
-          int val = field.empty() ? 0 : std::stoi(field);
-          if (fieldIdx == 0) { f = val; }
-          else if (fieldIdx == 1) { t = val; }
-          else if (fieldIdx == 2) { n = val; }
-          fieldIdx++;
+        int f[3] = {0, 0, 0};
+        for (int i = 0; i < 3 && std::getline(fss, field, '/'); i++) {
+          if (!field.empty()) {
+            f[i] = std::stoi(field);
+          }
         }
-        model.faces.push_back(f - 1);
-        model.uvFaces.push_back(t - 1);
-        model.normalFaces.push_back(n - 1);
+        verts.push_back({f[0] - 1, f[1] - 1, f[2] - 1});
+      }
+
+      for (size_t i = 1; i < verts.size() - 1; i++) {
+        size_t triangle[3] = {0, i, i + 1};
+        for (size_t fvert : triangle) {
+          model.faces.push_back(verts[fvert][0]);
+          model.uvFaces.push_back(verts[fvert][1]);
+          model.normalFaces.push_back(verts[fvert][2]);
+        }
       }
     }
   }
