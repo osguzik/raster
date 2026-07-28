@@ -20,9 +20,9 @@ struct Scene {
   std::vector<SceneObj> objects;
 };
 
-SceneObj addObj(Scene &scene, const Transform &transform, const Material &material);
-
-void renderObj(const SceneObj &obj, const Camera &camera, Lighting &Lighting, Image &framebuffer, std::vector<float> &zbuffer, int w, int h);
+SceneObj addObj(Scene &scene, const std::string &filename, const Transform &transform, const Material &material, bool shouldRecalcNormals);
 
 void renderScene(const Scene &scene, Image &framebuffer, std::vector<float> &zbuffer, int w, int h);
+
+Scene renderDragonScene();
 
