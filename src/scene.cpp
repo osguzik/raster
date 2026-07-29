@@ -9,8 +9,11 @@
 #include "render/raster/vertex.hpp"
 #include "render/shading.hpp"
 #include "render/vertex_transform.hpp"
+
 #include <utility>
 #include <vector>
+
+namespace {
 
 Vec3 transformPoint(const Mat4 &m, const Vec3 &point) {
   Vec4 result = m * Vec4{point.x, point.y, point.z, 1.0f};
@@ -47,6 +50,8 @@ void renderObj(const SceneObj &obj, const Camera &camera, Lighting lighting, Ima
 
     triangle(v0, v1, v2, framebuffer, zbuffer, lighting, obj.material);
   }
+}
+
 }
 
 SceneObj addObj(Scene &scene, const std::string &filename, const Transform &transform, const Material &material, bool shouldRecalcNormals) {

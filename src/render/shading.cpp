@@ -8,10 +8,14 @@
 #include <cmath>
 #include <cstdint>
 
-static std::uint8_t shadeColor(std::uint8_t baseColor, std::uint8_t lightColor, float specular, float intensity) {
+namespace {
+
+std::uint8_t shadeColor(std::uint8_t baseColor, std::uint8_t lightColor, float specular, float intensity) {
   float combined = (baseColor / 255.0f) * (lightColor / 255.0f) * intensity + specular;
   combined = std::clamp(combined, 0.0f, 1.0f);
   return static_cast<std::uint8_t>(combined * 255.0f);
+}
+
 }
 
 Color blinnPhong(const Vec3 &normal, const Vec2 &uv, const Lighting &lighting, const Material &material) {

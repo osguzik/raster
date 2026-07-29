@@ -6,6 +6,7 @@
 #include "model.hpp"
 #include "render/material.hpp"
 #include "render/shading.hpp"
+
 #include <vector>
 
 struct SceneObj {
