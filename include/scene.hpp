@@ -21,9 +21,13 @@ struct Scene {
   std::vector<SceneObj> objects;
 };
 
+Camera defaultCamera(float ar);
+
+Lighting defaultLighting();
+
 SceneObj addObj(Scene &scene, const std::string &filename, const Transform &transform, const Material &material, bool shouldRecalcNormals);
 
 void renderScene(const Scene &scene, Image &framebuffer, std::vector<float> &zbuffer, int w, int h);
 
-Scene renderDragonScene();
+Scene buildDragonScene(int w, int h);
 

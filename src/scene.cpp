@@ -10,6 +10,7 @@
 #include "render/shading.hpp"
 #include "render/vertex_transform.hpp"
 
+#include <numbers>
 #include <utility>
 #include <vector>
 
@@ -52,6 +53,26 @@ void renderObj(const SceneObj &obj, const Camera &camera, Lighting lighting, Ima
   }
 }
 
+}
+
+Camera defaultCamera(float ar) {
+  return Camera {
+    .eye = {0.0f, 0.0f, 1.0f},
+    .at = {0.0f, 0.0f, -2.0f},
+    .up = {0.0f, 1.0f, 0.0f},
+    .fovY = std::numbers::pi_v<float> / 4.0f,
+    .ar = ar,
+    .near = 0.1f,
+    .far = 10.0f
+  };
+}
+
+Lighting defaultLighting() {
+  Lighting lighting;
+  lighting.lightDir = normalize(Vec3{0.0f, 0.0f, 1.0f});
+  lighting.ambient = 0.1f;
+  lighting.lightColor = {255, 255, 255};
+  return lighting;
 }
 
 SceneObj addObj(Scene &scene, const std::string &filename, const Transform &transform, const Material &material, bool shouldRecalcNormals) {
