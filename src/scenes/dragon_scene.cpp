@@ -1,23 +1,37 @@
+#include "render/material.hpp"
 #include "scene.hpp"
 
 #include <numbers>
+#include <string>
 
-Scene buildDragonScene(int w, int h) {
+Scene buildDragonsScene(int w, int h) {
   Scene scene;
   scene.camera = defaultCamera(/*ar=*/static_cast<float>(w) / h);
   scene.lighting = defaultLighting();
 
-  Transform transform;
-  transform.position = {0.0f, -0.5f, -2.0f};
-  transform.rotation.y = std::numbers::pi_v<float> * 2.0f;
-  transform.scale = {0.2f, 0.2f, 0.2f};
+  Transform blueDragon;
+  blueDragon.position = {-1.25f, -0.5f, -2.0f};
+  blueDragon.rotation.y = std::numbers::pi_v<float>;
+  blueDragon.scale = {0.2f, 0.2f, 0.2f};
 
-  Material material;
-  material.baseColor = {210, 30, 70};
-  material.specularStrength = 4.0f;
-  material.shininess = 128.0f;
+  Material blueMaterial;
+  blueMaterial.baseColor = {15, 80, 185};
+  blueMaterial.specularStrength = 4.0f;
+  blueMaterial.shininess = 128.0f;
 
-  addObj(scene, "../assets/dragon.obj", transform, material, /*shouldRecalcNormals=*/true);
+  addObj(scene, std::string(ASSETS_DIR) + "dragon.obj", blueDragon, blueMaterial,
+         /*shouldRecalcNormals=*/false); // flat shading
+
+  Transform redDragon;
+  redDragon.position = {1.25f, -0.5f, -2.0f};
+  redDragon.rotation.y = std::numbers::pi_v<float> * 2.0f;
+  redDragon.scale = {0.2f, 0.2f, 0.2f};
+
+  Material redMaterial = blueMaterial;
+  redMaterial.baseColor = {210, 30, 70};
+
+  addObj(scene, std::string(ASSETS_DIR) + "dragon.obj", redDragon, redMaterial,
+         /*shouldRecalcNormals=*/true); // smooth shading
 
   return scene;
 }

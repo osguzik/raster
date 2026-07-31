@@ -29,5 +29,5 @@ SceneObj addObj(Scene &scene, const std::string &filename, const Transform &tran
 
 void renderScene(const Scene &scene, Image &framebuffer, std::vector<float> &zbuffer, int w, int h);
 
-Scene buildDragonScene(int w, int h);
+Scene buildDragonsScene(int w, int h);
 

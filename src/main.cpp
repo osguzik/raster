@@ -10,7 +10,7 @@
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
-    std::cerr << "usage: " << argv[0] << " <dragon>\n";
+    std::cerr << "usage: " << argv[0] << " <dragons>\n";
     return 1;
   }
 
@@ -18,9 +18,9 @@ int main(int argc, char *argv[]) {
   int w, h;
   std::string name = argv[1];
 
-  if (name == "dragon") {
-    w = 1024, h = 1024;
-    scene = buildDragonScene(w, h);
+  if (name == "dragons") {
+    w = 2048; h = 1024;
+    scene = buildDragonsScene(w, h);
   } else {
     std::cerr << "error: unknown scene " << name << "\n";
     return 1;
