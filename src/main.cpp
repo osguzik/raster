@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
   std::vector<float> zbuffer(w * h, std::numeric_limits<float>::max());
 
   renderScene(scene, framebuffer, zbuffer, w, h);
-  Image zbufferImg = zbufferView(zbuffer, w, h);
+  Image zbufferImg = zbufferView(zbuffer, w, h, scene.camera.near, scene.camera.far);
 
   ppm::write(framebuffer, "framebuffer.ppm");
   ppm::write(zbufferImg, "zbuffer.ppm");
