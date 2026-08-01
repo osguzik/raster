@@ -12,5 +12,6 @@ struct ScreenVertex {
   Vec3 pos;
   Vec2 uv;
   Vec3 normal;
+  float invW;
 };
 

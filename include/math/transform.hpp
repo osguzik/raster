@@ -51,9 +51,9 @@ inline Mat4 scale(Vec3 s) {
 }
 
 struct Transform {
-  Vec3 position = {0, 0, 0};
-  Vec3 rotation = {0, 0, 0};
-  Vec3 scale = {1, 1, 1};
+  Vec3 position = {0.0f, 0.0f, 0.0f};
+  Vec3 rotation = {0.0f, 0.0f, 0.0f};
+  Vec3 scale = {1.0f, 1.0f, 1.0f};
 };
 
 inline Mat4 modelMat(const Transform &t) {

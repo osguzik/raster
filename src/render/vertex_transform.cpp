@@ -11,8 +11,9 @@ ClipVertex toClip(const Vec3 &modelPos, const Vec3 &modelNormal, const Vec2 &mod
 }
 
 ScreenVertex toScreen(const ClipVertex &v, const Mat4 &viewport) {
-  Vec3 ndc = {v.pos.x / v.pos.w, v.pos.y / v.pos.w, v.pos.z / v.pos.w};
+  float invW = 1.0f / v.pos.w;
+  Vec3 ndc = {v.pos.x * invW, v.pos.y * invW, v.pos.z * invW};
   Vec4 screen = viewport * Vec4{ndc.x, ndc.y, ndc.z, 1.0f};
-  return {{screen.x, screen.y, screen.z}, v.uv, v.normal};
+  return {{screen.x, screen.y, screen.z}, v.uv, v.normal, invW};
 }
 

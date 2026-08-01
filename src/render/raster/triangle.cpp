@@ -57,8 +57,9 @@ void triangle(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex
         int idx = y * img.w + x;
         if (z < zbuffer[idx]) {
           zbuffer[idx] = z;
-          Vec3 normal = normalize(v0.normal * w0 + v1.normal * w1 + v2.normal * w2);
-          Vec2 uv = v0.uv * w0 + v1.uv * w1 + v2.uv * w2;
+          float invW = w0 * v0.invW + w1 * v1.invW + w2 * v2.invW;
+          Vec2 uv = (v0.uv * v0.invW * w0 + v1.uv * v1.invW * w1 + v2.uv * v2.invW * w2) / invW;
+          Vec3 normal = normalize((v0.normal * v0.invW * w0 + v1.normal * v1.invW * w1 + v2.normal * v2.invW * w2) / invW);
           img.set(x, y, blinnPhong(normal, uv, lighting, material));
         }
       }
