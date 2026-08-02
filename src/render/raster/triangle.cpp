@@ -15,7 +15,7 @@ static float edge(const Vec3 &p, const Vec3 &a, const Vec3 &dir) {
 }
 
 void triangle(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex &v2, Image &img, std::vector<float> &zbuffer,
-              const Lighting &lighting, const Material &material) {
+              Lighting lighting, const Material &material, const Vec3 &eye) {
   const Vec3 &p0 = v0.pos;
   const Vec3 &p1 = v1.pos;
   const Vec3 &p2 = v2.pos;
@@ -60,6 +60,8 @@ void triangle(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex
           float invW = w0 * v0.invW + w1 * v1.invW + w2 * v2.invW;
           Vec2 uv = (v0.uv * v0.invW * w0 + v1.uv * v1.invW * w1 + v2.uv * v2.invW * w2) / invW;
           Vec3 normal = normalize((v0.normal * v0.invW * w0 + v1.normal * v1.invW * w1 + v2.normal * v2.invW * w2) / invW);
+          Vec3 worldPos = (v0.worldPos * v0.invW * w0 + v1.worldPos * v1.invW * w1 + v2.worldPos * v2.invW * w2) / invW;
+          lighting.viewDir = normalize(eye - worldPos);
           img.set(x, y, blinnPhong(normal, uv, lighting, material));
         }
       }

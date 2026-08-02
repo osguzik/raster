@@ -39,12 +39,9 @@ void renderObj(const SceneObj &obj, const Camera &camera, Lighting lighting, Ima
     Vec3 worldPos1 = transformPoint(modelTransform, modelPos1);
     Vec3 worldPos2 = transformPoint(modelTransform, modelPos2);
 
-    Vec3 centroid = (worldPos0 + worldPos1 + worldPos2) / 3.0f;
-    lighting.viewDir = normalize(camera.eye - centroid);
-
-    ClipVertex clip0 = toClip(modelPos0, model.normals[model.normalFaces[i * 3]], model.uvs[model.uvFaces[i * 3]], mvp, normalMat);
-    ClipVertex clip1 = toClip(modelPos1, model.normals[model.normalFaces[i * 3 + 1]], model.uvs[model.uvFaces[i * 3 + 1]], mvp, normalMat);
-    ClipVertex clip2 = toClip(modelPos2, model.normals[model.normalFaces[i * 3 + 2]], model.uvs[model.uvFaces[i * 3 + 2]], mvp, normalMat);
+    ClipVertex clip0 = toClip(modelPos0, worldPos0, model.normals[model.normalFaces[i * 3]], model.uvs[model.uvFaces[i * 3]], mvp, normalMat);
+    ClipVertex clip1 = toClip(modelPos1, worldPos1, model.normals[model.normalFaces[i * 3 + 1]], model.uvs[model.uvFaces[i * 3 + 1]], mvp, normalMat);
+    ClipVertex clip2 = toClip(modelPos2, worldPos2, model.normals[model.normalFaces[i * 3 + 2]], model.uvs[model.uvFaces[i * 3 + 2]], mvp, normalMat);
 
     ClipVertex clippedTriangles[2][3];
     int triangleCount = clipNearPlane(clip0, clip1, clip2, camera.near, clippedTriangles);
@@ -52,7 +49,7 @@ void renderObj(const SceneObj &obj, const Camera &camera, Lighting lighting, Ima
       ScreenVertex sv0 = toScreen(clippedTriangles[j][0], vp);
       ScreenVertex sv1 = toScreen(clippedTriangles[j][1], vp);
       ScreenVertex sv2 = toScreen(clippedTriangles[j][2], vp);
-      triangle(sv0, sv1, sv2, framebuffer, zbuffer, lighting, obj.material);
+      triangle(sv0, sv1, sv2, framebuffer, zbuffer, lighting, obj.material, camera.eye);
     }
   }
 }

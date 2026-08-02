@@ -4,12 +4,14 @@
 
 struct ClipVertex {
   Vec4 pos;
+  Vec3 worldPos;
   Vec2 uv;
   Vec3 normal;
 };
 
 struct ScreenVertex {
   Vec3 pos;
+  Vec3 worldPos;
   Vec2 uv;
   Vec3 normal;
   float invW;

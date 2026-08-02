@@ -7,6 +7,7 @@ namespace {
 ClipVertex interpolateVertex(const ClipVertex &from, const ClipVertex &to, float factor) {
   return ClipVertex{
     from.pos + (to.pos - from.pos) * factor,
+    from.worldPos + (to.worldPos - from.worldPos) * factor,
     from.uv + (to.uv - from.uv) * factor,
     from.normal + (to.normal - from.normal) * factor
   };
