@@ -5,6 +5,7 @@
 #include "math/mat.hpp"
 #include "math/transform.hpp"
 #include "model.hpp"
+#include "render/clipping.hpp"
 #include "render/raster/triangle.hpp"
 #include "render/raster/vertex.hpp"
 #include "render/shading.hpp"
@@ -45,11 +46,14 @@ void renderObj(const SceneObj &obj, const Camera &camera, Lighting lighting, Ima
     ClipVertex clip1 = toClip(modelPos1, model.normals[model.normalFaces[i * 3 + 1]], model.uvs[model.uvFaces[i * 3 + 1]], mvp, normalMat);
     ClipVertex clip2 = toClip(modelPos2, model.normals[model.normalFaces[i * 3 + 2]], model.uvs[model.uvFaces[i * 3 + 2]], mvp, normalMat);
 
-    ScreenVertex v0 = toScreen(clip0, vp);
-    ScreenVertex v1 = toScreen(clip1, vp);
-    ScreenVertex v2 = toScreen(clip2, vp);
-
-    triangle(v0, v1, v2, framebuffer, zbuffer, lighting, obj.material);
+    ClipVertex clippedTriangles[2][3];
+    int triangleCount = clipNearPlane(clip0, clip1, clip2, camera.near, clippedTriangles);
+    for (int i = 0; i < triangleCount; i++) {
+      ScreenVertex sv0 = toScreen(clippedTriangles[i][0], vp);
+      ScreenVertex sv1 = toScreen(clippedTriangles[i][1], vp);
+      ScreenVertex sv2 = toScreen(clippedTriangles[i][2], vp);
+      triangle(sv0, sv1, sv2, framebuffer, zbuffer, lighting, obj.material);
+    }
   }
 }
 

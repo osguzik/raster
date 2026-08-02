@@ -48,7 +48,7 @@ Scene buildDragonsScene(int w, int h) {
   planeMaterial.texture = &checker;
 
   Transform plane;
-  plane.position = {0.0f, -1.5f, -1.0f};
+  plane.position = {0.0f, -0.5f, -1.0f};
   plane.scale = {8.0f, 1.0f, 4.0f};
 
   addObj(scene, std::string(ASSETS_DIR) + "plane.obj", plane, planeMaterial,

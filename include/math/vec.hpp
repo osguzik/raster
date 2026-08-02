@@ -6,6 +6,7 @@ struct Vec2 {
   float x = 0, y = 0;
 
   Vec2 operator+(const Vec2 &v) const { return {x + v.x, y + v.y}; }
+  Vec2 operator-(const Vec2 &v) const { return {x - v.x, y - v.y}; }
   Vec2 operator*(float s) const { return {x * s, y * s}; }
   Vec2 operator/(float s) const { return {x / s, y / s}; }
 };
@@ -39,12 +40,11 @@ inline Vec3 normalize(const Vec3 &v) {
 struct Vec4 {
   float x = 0, y = 0, z = 0, w = 0;
 
-  float operator[](int i) const {
-    return (&x)[i];
-  }
+  Vec4 operator+(const Vec4 &v) const { return {x + v.x, y + v.y, z + v.z, w + v.w}; }
+  Vec4 operator-(const Vec4 &v) const { return {x - v.x, y - v.y, z - v.z, w - v.w}; }
+  Vec4 operator*(float s) const { return {x * s, y * s, z * s, w * s}; }
 
-  float &operator[](int i) {
-    return (&x)[i];
-  }
+  float operator[](int i) const { return (&x)[i]; }
+  float &operator[](int i) { return (&x)[i]; }
 };
 
