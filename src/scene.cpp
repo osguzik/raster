@@ -8,7 +8,7 @@
 #include "render/clipping.hpp"
 #include "render/raster/triangle.hpp"
 #include "render/raster/vertex.hpp"
-#include "render/shading.hpp"
+#include "render/lighting.hpp"
 #include "render/vertex_transform.hpp"
 
 #include <numbers>

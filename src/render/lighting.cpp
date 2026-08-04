@@ -1,4 +1,4 @@
-#include "render/shading.hpp"
+#include "render/lighting.hpp"
 
 #include "image.hpp"
 #include "math/vec.hpp"
@@ -10,7 +10,7 @@
 
 namespace {
 
-std::uint8_t shadeColor(std::uint8_t baseColor, std::uint8_t lightColor, float specular, float intensity) {
+std::uint8_t combineColor(std::uint8_t baseColor, std::uint8_t lightColor, float specular, float intensity) {
   float combined = (baseColor / 255.0f) * (lightColor / 255.0f) * intensity + specular;
   combined = std::clamp(combined, 0.0f, 1.0f);
   return static_cast<std::uint8_t>(combined * 255.0f);
@@ -30,9 +30,9 @@ Color blinnPhong(const Vec3 &normal, const Vec2 &uv, const Lighting &lighting, c
   float intensity = std::min(lighting.ambient + diffuse, 1.0f);
   Color surface = material.texture ? material.texture->sample(uv.x, uv.y) : material.baseColor;
   return Color{
-    shadeColor(surface.r, lighting.lightColor.r, specular, intensity),
-    shadeColor(surface.g, lighting.lightColor.g, specular, intensity),
-    shadeColor(surface.b, lighting.lightColor.b, specular, intensity)
+    combineColor(surface.r, lighting.lightColor.r, specular, intensity),
+    combineColor(surface.g, lighting.lightColor.g, specular, intensity),
+    combineColor(surface.b, lighting.lightColor.b, specular, intensity)
   };
 }
 
