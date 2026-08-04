@@ -7,46 +7,46 @@
 
 inline Mat4 translate(Vec3 t) {
   return Mat4{{
-    {1, 0, 0, t.x},
-    {0, 1, 0, t.y},
-    {0, 0, 1, t.z},
-    {0, 0, 0, 1}
+    {1.0f, 0.0f, 0.0f, t.x},
+    {0.0f, 1.0f, 0.0f, t.y},
+    {0.0f, 0.0f, 1.0f, t.z},
+    {0.0f, 0.0f, 0.0f, 1.0f}
   }};
 }
 
 inline Mat4 rotateX(float rad) {
   return Mat4{{
-  {1, 0, 0, 0},
-  {0, std::cos(rad), -std::sin(rad), 0},
-  {0, std::sin(rad), std::cos(rad), 0},
-  {0, 0, 0, 1}
+  {1.0f, 0.0f, 0.0f, 0.0f},
+  {0.0f, std::cos(rad), -std::sin(rad), 0.0f},
+  {0.0f, std::sin(rad), std::cos(rad), 0.0f},
+  {0.0f, 0.0f, 0.0f, 1.0f}
   }};
 }
 
 inline Mat4 rotateY(float rad) {
   return Mat4{{
-    {std::cos(rad), 0, std::sin(rad), 0},
-    {0, 1, 0, 0},
-    {-std::sin(rad), 0, std::cos(rad), 0},
-    {0, 0, 0, 1}
+    {std::cos(rad), 0.0f, std::sin(rad), 0.0f},
+    {0.0f, 1.0f, 0.0f, 0.0f},
+    {-std::sin(rad), 0.0f, std::cos(rad), 0.0f},
+    {0.0f, 0.0f, 0.0f, 1.0f}
   }};
 }
 
 inline Mat4 rotateZ(float rad) {
   return Mat4{{
-  {std::cos(rad), -std::sin(rad), 0, 0},
-  {std::sin(rad), std::cos(rad), 0, 0},
-  {0, 0, 1, 0},
-  {0, 0, 0, 1}
+  {std::cos(rad), -std::sin(rad), 0.0f, 0.0f},
+  {std::sin(rad), std::cos(rad), 0.0f, 0.0f},
+  {0.0f, 0.0f, 1.0f, 0.0f},
+  {0.0f, 0.0f, 0.0f, 1.0f}
   }};
 }
 
 inline Mat4 scale(Vec3 s) {
   return Mat4{{
-    {s.x, 0, 0, 0},
-    {0, s.y, 0, 0},
-    {0, 0, s.z, 0},
-    {0, 0, 0, 1}
+    {s.x, 0.0f, 0.0f, 0.0f},
+    {0.0f, s.y, 0.0f, 0.0f},
+    {0.0f, 0.0f, s.z, 0.0f},
+    {0.0f, 0.0f, 0.0f, 1.0f}
   }};
 }
 
@@ -69,27 +69,27 @@ inline Mat4 lookAt(const Vec3 &eye, const Vec3 &at, const Vec3 &up) {
     {r.x, r.y, r.z, -dot(r, eye)},
     {u.x, u.y, u.z, -dot(u, eye)},
     {n.x, n.y, n.z, -dot(n, eye)},
-    {0, 0, 0, 1}
+    {0.0f, 0.0f, 0.0f, 1.0f}
   }};
 }
 
 // right-handed coordinate system
 inline Mat4 perspective(float fovY, float ar, float near, float far) {
-  const float tanHalfFovY = std::tan(fovY / 2);
+  const float tanHalfFovY = std::tan(fovY / 2.0f);
   return Mat4{{
-    {1 / (ar * tanHalfFovY), 0, 0, 0},
-    {0, 1 / tanHalfFovY, 0, 0},
-    {0, 0, (near + far) / (near - far), (2 * near * far) / (near - far)},
-    {0, 0, -1, 0}
+    {1.0f / (ar * tanHalfFovY), 0.0f, 0.0f, 0.0f},
+    {0.0f, 1.0f / tanHalfFovY, 0.0f, 0.0f},
+    {0.0f, 0.0f, (near + far) / (near - far), (2.0f * near * far) / (near - far)},
+    {0.0f, 0.0f, -1.0f, 0.0f}
   }};
 }
 
 inline Mat4 viewport(int x, int y, int w, int h) {
   return Mat4{{
-  {w / 2.0f, 0, 0, x + w / 2.0f},
-  {0, -h / 2.0f, 0, y + h / 2.0f},
-  {0, 0, 1, 0},
-  {0, 0, 0, 1}
+  {w / 2.0f, 0.0f, 0.0f, x + w / 2.0f},
+  {0.0f, -h / 2.0f, 0.0f, y + h / 2.0f},
+  {0.0f, 0.0f, 1.0f, 0.0f},
+  {0.0f, 0.0f, 0.0f, 1.0f}
   }};
 }
 
@@ -131,6 +131,15 @@ inline Mat3 inverse(const Mat3 &m) {
   {A * invDet, D * invDet, G * invDet},
   {B * invDet, E * invDet, H * invDet},
   {C * invDet, F * invDet, I * invDet}
+  }};
+}
+
+inline Mat4 ortho(float left, float right, float bottom, float top, float near, float far) {
+  return Mat4{{
+  {2.0f / (right - left), 0.0f, 0.0f, -(right + left) / (right - left)},
+  {0.0f, 2.0f / (top - bottom), 0.0f, -(top + bottom) / (top - bottom)},
+  {0.0f, 0.0f, -2.0f / (far - near), -(far + near) / (far - near)},
+  {0.0f, 0.0f, 0.0f, 1.0f}
   }};
 }
 
