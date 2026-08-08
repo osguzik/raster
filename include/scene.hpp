@@ -5,7 +5,7 @@
 #include "math/transform.hpp"
 #include "model.hpp"
 #include "render/material.hpp"
-#include "render/lighting.hpp"
+#include "render/shading/lighting.hpp"
 
 #include <vector>
 

@@ -3,7 +3,7 @@
 #include "image.hpp"
 #include "render/material.hpp"
 #include "render/raster/vertex.hpp"
-#include "render/lighting.hpp"
+#include "render/shading/lighting.hpp"
 
 #include <vector>
 

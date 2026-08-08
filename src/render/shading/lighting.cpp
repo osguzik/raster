@@ -1,4 +1,4 @@
-#include "render/lighting.hpp"
+#include "render/shading/lighting.hpp"
 
 #include "image.hpp"
 #include "math/vec.hpp"
