@@ -6,74 +6,25 @@
 #include "render/raster/vertex.hpp"
 #include "render/shading/lighting.hpp"
 
-#include <algorithm>
-#include <cmath>
 #include <vector>
 
-static float edge(const Vec3 &p, const Vec3 &a, const Vec3 &dir) {
-  return (p.x - a.x) * dir.y - (p.y - a.y) * dir.x;
-}
-
-void triangle(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex &v2, Image &img, std::vector<float> &zbuffer,
+void triangle(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex &v2,
+              Image &img, std::vector<float> &zbuffer,
               Lighting lighting, const Material &material, const Vec3 &eye) {
-  const Vec3 &p0 = v0.pos;
-  const Vec3 &p1 = v1.pos;
-  const Vec3 &p2 = v2.pos;
-
-  float signedArea = (p1.x - p0.x) * (p2.y - p0.y) - (p1.y - p0.y) * (p2.x - p0.x);
-  if (signedArea >= 0.0f) { // back-facing
-    return;
-  }
-  float totalArea = std::abs(signedArea);
-
-  Vec3 dir0 = {p1.x - p0.x, p1.y - p0.y};
-  Vec3 dir1 = {p2.x - p1.x, p2.y - p1.y};
-  Vec3 dir2 = {p0.x - p2.x, p0.y - p2.y};
-
-  int minX = static_cast<int>(std::floor(std::min({p0.x, p1.x, p2.x})));
-  int maxX = static_cast<int>(std::ceil(std::max({p0.x, p1.x, p2.x})));
-  int minY = static_cast<int>(std::floor(std::min({p0.y, p1.y, p2.y})));
-  int maxY = static_cast<int>(std::ceil(std::max({p0.y, p1.y, p2.y})));
-
-  minX = std::max(minX, 0);
-  maxX = std::min(maxX, img.w - 1);
-  minY = std::max(minY, 0);
-  maxY = std::min(maxY, img.h - 1);
-
-  Vec3 start = {minX + 0.5f, minY + 0.5f};
-  float rowE0 = edge(start, p0, dir0);
-  float rowE1 = edge(start, p1, dir1);
-  float rowE2 = edge(start, p2, dir2);
-
-  for(int y = minY; y <= maxY; y++) {
-    float e0 = rowE0, e1 = rowE1, e2 = rowE2;
-    for(int x = minX; x <= maxX; x++) {
-      if(e0 >= 0 && e1 >= 0 && e2 >= 0) {
-        float w0 = e1 / totalArea;
-        float w1 = e2 / totalArea;
-        float w2 = e0 / totalArea;
-
-        float z = w0 * p0.z + w1 * p1.z + w2 * p2.z;
-        int idx = y * img.w + x;
-        if (z < zbuffer[idx]) {
-          zbuffer[idx] = z;
-          float invW = w0 * v0.invW + w1 * v1.invW + w2 * v2.invW;
-          Vec2 uv = (v0.uv * v0.invW * w0 + v1.uv * v1.invW * w1 + v2.uv * v2.invW * w2) / invW;
-          Vec3 normal = normalize((v0.normal * v0.invW * w0 + v1.normal * v1.invW * w1 + v2.normal * v2.invW * w2) / invW);
-          Vec3 worldPos = (v0.worldPos * v0.invW * w0 + v1.worldPos * v1.invW * w1 + v2.worldPos * v2.invW * w2) / invW;
-          lighting.viewDir = normalize(eye - worldPos);
-          img.set(x, y, blinnPhong(normal, uv, lighting, material));
-        }
-      }
-
-      e0 += dir0.y;
-      e1 += dir1.y;
-      e2 += dir2.y;
+  rasterize(v0, v1, v2, img.w, img.h, [&](int x, int y, float w0, float w1, float w2) {
+    float z = w0 * v0.pos.z + w1 * v1.pos.z + w2 * v2.pos.z;
+    int idx = y * img.w + x;
+    if (z >= zbuffer[idx]) {
+      return;
     }
+    zbuffer[idx] = z;
 
-    rowE0 -= dir0.x;
-    rowE1 -= dir1.x;
-    rowE2 -= dir2.x;
-  }
+    float invW = w0 * v0.invW + w1 * v1.invW + w2 * v2.invW;
+    Vec2 uv = (v0.uv * v0.invW * w0 + v1.uv * v1.invW * w1 + v2.uv * v2.invW * w2) / invW;
+    Vec3 normal = normalize((v0.normal * v0.invW * w0 + v1.normal * v1.invW * w1 + v2.normal * v2.invW * w2) / invW);
+    Vec3 worldPos = (v0.worldPos * v0.invW * w0 + v1.worldPos * v1.invW * w1 + v2.worldPos * v2.invW * w2) / invW;
+    lighting.viewDir = normalize(eye - worldPos);
+    img.set(x, y, blinnPhong(normal, uv, lighting, material));
+  });
 }
 
