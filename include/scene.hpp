@@ -2,6 +2,7 @@
 
 #include "camera.hpp"
 #include "image.hpp"
+#include "math/mat.hpp"
 #include "math/transform.hpp"
 #include "model.hpp"
 #include "render/material.hpp"
@@ -19,6 +20,7 @@ struct Scene {
   Camera camera;
   Lighting lighting;
   std::vector<SceneObj> objects;
+  Mat4 lightSpaceMat;
 };
 
 Camera defaultCamera(float ar);

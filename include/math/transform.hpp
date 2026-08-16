@@ -145,7 +145,7 @@ inline Mat4 ortho(float left, float right, float bottom, float top, float near, 
 
 inline Mat4 lightSpaceMat(const Vec3 &lightDir, const Vec3 &sceneCenter, float distance, float coverage, float near, float far) {
   Mat4 lightProjection = ortho(-coverage, coverage, -coverage, coverage, near, far);
-  Vec3 lightEye = sceneCenter - lightDir * distance;
+  Vec3 lightEye = sceneCenter + lightDir * distance;
   Mat4 lightView = lookAt(lightEye, sceneCenter, {0.0f, 1.0f, 0.0f});
   return lightProjection * lightView;
 }
