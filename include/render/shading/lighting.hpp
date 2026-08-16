@@ -11,5 +11,5 @@ struct Lighting {
   Color lightColor;
 };
 
-Color blinnPhong(const Vec3 &normal, const Vec2 &uv, const Lighting &lighting, const Material &material);
+Color blinnPhong(const Vec3 &normal, const Vec2 &uv, const Lighting &lighting, const Material &material, float shadow);
 

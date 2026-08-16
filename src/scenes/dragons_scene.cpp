@@ -13,7 +13,7 @@ Scene buildDragonsScene(int w, int h) {
   scene.camera.at  = {0.0f, -0.3f, -2.5f};
 
   scene.lighting = defaultLighting();
-  scene.lighting.lightDir = normalize(Vec3{0.3f, 0.2f, 0.4f});
+  scene.lighting.lightDir = normalize(Vec3{0.0f, 0.2f, 0.4f});
 
   Transform blueDragon;
   blueDragon.position = {-1.25f, -0.5f, -2.0f};
@@ -53,6 +53,9 @@ Scene buildDragonsScene(int w, int h) {
 
   addObj(scene, std::string(ASSETS_DIR) + "plane.obj", plane, planeMaterial,
          /*shouldRecalcNormals=*/false);
+
+  Vec3 sceneCenter = {0.0f, -0.5f, -1.5f};
+  scene.lightSpaceMat = lightSpaceMat(scene.lighting.lightDir, sceneCenter, /*distance=*/6.0f, /*coverage=*/8.0f, /*near=*/0.1f, /*far=*/12.0f);
 
   return scene;
 }

@@ -29,7 +29,7 @@ Lighting defaultLighting();
 
 SceneObj addObj(Scene &scene, const std::string &filename, const Transform &transform, const Material &material, bool shouldRecalcNormals);
 
-void renderScene(const Scene &scene, Image &framebuffer, std::vector<float> &zbuffer, int w, int h);
+void renderScene(const Scene &scene, Image &framebuffer, std::vector<float> &zbuffer, int w, int h, const std::vector<float> &shadowMap);
 
 Scene buildDragonsScene(int w, int h);
 

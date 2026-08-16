@@ -22,7 +22,8 @@ Vec3 transformPoint(const Mat4 &m, const Vec3 &point) {
   return {result.x, result.y, result.z};
 }
 
-void renderObj(const SceneObj &obj, const Camera &camera, Lighting lighting, Image &framebuffer, std::vector<float> &zbuffer, int w, int h) {
+void renderObj(const SceneObj &obj, const Camera &camera, Lighting lighting, Image &framebuffer, std::vector<float> &zbuffer, int w, int h,
+               const Mat4 &lightSpaceMat, const std::vector<float> &shadowMap) {
   const Model &model = obj.model;
 
   Mat4 modelTransform = modelMat(obj.transform);
@@ -49,7 +50,7 @@ void renderObj(const SceneObj &obj, const Camera &camera, Lighting lighting, Ima
       ScreenVertex sv0 = toScreen(clippedTriangles[j][0], vp);
       ScreenVertex sv1 = toScreen(clippedTriangles[j][1], vp);
       ScreenVertex sv2 = toScreen(clippedTriangles[j][2], vp);
-      triangle(sv0, sv1, sv2, framebuffer, zbuffer, lighting, obj.material, camera.eye);
+      triangle(sv0, sv1, sv2, framebuffer, zbuffer, lighting, obj.material, camera.eye, lightSpaceMat, shadowMap);
     }
   }
 }
@@ -82,9 +83,9 @@ SceneObj addObj(Scene &scene, const std::string &filename, const Transform &tran
   return scene.objects.back();
 }
 
-void renderScene(const Scene &scene, Image &framebuffer, std::vector<float> &zbuffer, int w, int h) {
+void renderScene(const Scene &scene, Image &framebuffer, std::vector<float> &zbuffer, int w, int h, const std::vector<float> &shadowMap) {
   for (const SceneObj &obj : scene.objects) {
-    renderObj(obj, scene.camera, scene.lighting, framebuffer, zbuffer, w, h);
+    renderObj(obj, scene.camera, scene.lighting, framebuffer, zbuffer, w, h, scene.lightSpaceMat, shadowMap);
   }
 }
 

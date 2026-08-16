@@ -18,7 +18,7 @@ std::uint8_t combineColor(std::uint8_t baseColor, std::uint8_t lightColor, float
 
 }
 
-Color blinnPhong(const Vec3 &normal, const Vec2 &uv, const Lighting &lighting, const Material &material) {
+Color blinnPhong(const Vec3 &normal, const Vec2 &uv, const Lighting &lighting, const Material &material, float shadow) {
   float diffuse = std::max(dot(normal, lighting.lightDir), 0.0f);
   float specular = 0.0f;
 
@@ -27,7 +27,9 @@ Color blinnPhong(const Vec3 &normal, const Vec2 &uv, const Lighting &lighting, c
     specular = material.specularStrength * std::pow(std::max(dot(normal, halfway), 0.0f), material.shininess);
   }
 
-  float intensity = std::min(lighting.ambient + diffuse, 1.0f);
+  float lit = 1.0f - shadow;
+  float intensity = std::min(lighting.ambient + diffuse * lit, 1.0f);
+  specular *= lit;
   Color surface = material.texture ? material.texture->sample(uv.x, uv.y) : material.baseColor;
   return Color{
     combineColor(surface.r, lighting.lightColor.r, specular, intensity),

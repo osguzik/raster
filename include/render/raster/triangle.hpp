@@ -23,7 +23,7 @@ void rasterize(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVerte
   const Vec3 &p2 = v2.pos;
 
   float signedArea = (p1.x - p0.x) * (p2.y - p0.y) - (p1.y - p0.y) * (p2.x - p0.x);
-  if (signedArea >= 0.0f) {
+  if (signedArea >= 0.0f) { // back-facing
     return;
   }
   float totalArea = std::abs(signedArea);

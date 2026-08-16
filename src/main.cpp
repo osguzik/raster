@@ -1,4 +1,5 @@
 #include "image.hpp"
+#include "render/shading/shadow.hpp"
 #include "render/zbuffer_view.hpp"
 #include "scene.hpp"
 
@@ -28,8 +29,10 @@ int main(int argc, char *argv[]) {
 
   Image framebuffer(w, h);
   std::vector<float> zbuffer(w * h, std::numeric_limits<float>::max());
+  std::vector<float> shadowMap(w * h);
 
-  renderScene(scene, framebuffer, zbuffer, w, h);
+  renderShadowMap(scene, scene.lightSpaceMat, 0.1f, shadowMap, w, h);
+  renderScene(scene, framebuffer, zbuffer, w, h, shadowMap);
   Image zbufferImg = zbufferView(zbuffer, w, h, scene.camera.near, scene.camera.far);
 
   ppm::write(framebuffer, "framebuffer.ppm");

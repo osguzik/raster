@@ -28,7 +28,7 @@ void triangle(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex
     Vec3 worldPos = (v0.worldPos * v0.invW * w0 + v1.worldPos * v1.invW * w1 + v2.worldPos * v2.invW * w2) / invW;
     lighting.viewDir = normalize(eye - worldPos);
     float shadow = calcShadow(worldPos, lightSpaceMat, shadowMap, img.w, img.h);
-    img.set(x, y, blinnPhong(normal, uv, lighting, material));
+    img.set(x, y, blinnPhong(normal, uv, lighting, material, shadow));
   });
 }
 
