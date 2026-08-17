@@ -78,12 +78,22 @@ float calcShadow(const Vec3 &worldPos, const Mat4 &lightSpaceMat, const std::vec
     return 0.0f;
   }
   float currDepth = projCoords.z;
-
-  int x = std::clamp(static_cast<int>(u * w), 0, w - 1);
-  int y = std::clamp(static_cast<int>(v * h), 0, h - 1);
-
-  float closestDepth = shadowMap[y * w + x];
+  int centerX = std::clamp(static_cast<int>(u * w), 0, w - 1);
+  int centerY = std::clamp(static_cast<int>(v * h), 0, h - 1);
   float bias = 0.01f;
-  return (currDepth - bias > closestDepth) ? 1.0f : 0.0f;
+
+  float factor = 0.0f;
+  int sampleCount = 0;
+  for (int dy = -1; dy <= 1; dy++) {
+    for (int dx = -1; dx <= 1; dx++) {
+      int x = std::clamp(centerX + dx, 0, w - 1);
+      int y = std::clamp(centerY + dy, 0, h - 1);
+      float closestDepth = shadowMap[y * w + x];
+      factor += (currDepth - bias > closestDepth) ? 1.0f : 0.0f;
+      sampleCount++;
+    }
+  }
+
+  return factor / sampleCount;
 }
 
