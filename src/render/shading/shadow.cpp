@@ -78,8 +78,8 @@ float calcShadow(const Vec3 &worldPos, const Mat4 &lightSpaceMat, const std::vec
     return 0.0f;
   }
   float currDepth = projCoords.z;
-  int centerX = std::clamp(static_cast<int>(u * w), 0, w - 1);
-  int centerY = std::clamp(static_cast<int>(v * h), 0, h - 1);
+  int centerX = std::clamp(static_cast<int>(u * (w - 1)), 0, w - 1);
+  int centerY = std::clamp(static_cast<int>(v * (h - 1)), 0, h - 1);
   float bias = 0.01f;
 
   float factor = 0.0f;
