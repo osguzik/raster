@@ -1,4 +1,5 @@
 #include "image.hpp"
+#include "render/post/bloom.hpp"
 #include "render/shading/shadow.hpp"
 #include "render/zbuffer_view.hpp"
 #include "scene.hpp"
@@ -33,6 +34,7 @@ int main(int argc, char *argv[]) {
 
   renderShadowMap(scene, scene.lightSpaceMat, /*near=*/0.1f, shadowMap, w, h);
   renderScene(scene, framebuffer, zbuffer, w, h, shadowMap);
+  applyBloom(framebuffer, 0.5f);
   Image zbufferImg = zbufferView(zbuffer, w, h, scene.camera.near, scene.camera.far);
 
   ppm::write(framebuffer, "framebuffer.ppm");
