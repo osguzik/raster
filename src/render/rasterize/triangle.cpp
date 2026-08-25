@@ -1,10 +1,10 @@
-#include "render/raster/triangle.hpp"
+#include "render/rasterize/triangle.hpp"
 
 #include "image.hpp"
 #include "math/mat.hpp"
 #include "math/vec.hpp"
 #include "render/material.hpp"
-#include "render/raster/vertex.hpp"
+#include "render/rasterize/vertex.hpp"
 #include "render/shading/lighting.hpp"
 #include "render/shading/shadow.hpp"
 

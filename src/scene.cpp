@@ -6,8 +6,8 @@
 #include "math/transform.hpp"
 #include "model.hpp"
 #include "render/clipping.hpp"
-#include "render/raster/triangle.hpp"
-#include "render/raster/vertex.hpp"
+#include "render/rasterize/triangle.hpp"
+#include "render/rasterize/vertex.hpp"
 #include "render/shading/lighting.hpp"
 #include "render/vertex_transform.hpp"
 

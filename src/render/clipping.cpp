@@ -1,6 +1,6 @@
 #include "render/clipping.hpp"
 
-#include "render/raster/vertex.hpp"
+#include "render/rasterize/vertex.hpp"
 
 namespace {
 

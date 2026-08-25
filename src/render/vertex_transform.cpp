@@ -2,7 +2,7 @@
 
 #include "math/mat.hpp"
 #include "math/vec.hpp"
-#include "render/raster/vertex.hpp"
+#include "render/rasterize/vertex.hpp"
 
 ClipVertex toClip(const Vec3 &modelPos, const Vec3 &worldPos, const Vec3 &modelNormal, const Vec2 &modelUV, const Mat4 &mvp, const Mat3 &normalMat) {
   Vec4 clip = mvp * Vec4{modelPos.x, modelPos.y, modelPos.z, 1.0f};
