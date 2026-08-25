@@ -13,7 +13,7 @@ Scene buildDragonsScene(int w, int h) {
   scene.camera.at  = {0.0f, -0.3f, -2.5f};
 
   scene.lighting = defaultLighting();
-  scene.lighting.lightDir = normalize(Vec3{0.0f, 0.2f, -0.4f});
+  scene.lighting.lightDir = normalize(Vec3{0.0f, 0.2f, 0.4f});
 
   Transform blueDragon;
   blueDragon.position = {-1.25f, -0.5f, -2.0f};

@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
 
   renderShadowMap(scene, scene.lightSpaceMat, /*near=*/0.1f, shadowMap, w, h);
   renderScene(scene, framebuffer, zbuffer, w, h, shadowMap);
-  applyBloom(framebuffer, 0.5f);
+  applyBloom(framebuffer, /*threshold=*/0.7f, /*blurRadius=*/10, /*intensity=*/0.8f);
   Image zbufferImg = zbufferView(zbuffer, w, h, scene.camera.near, scene.camera.far);
 
   ppm::write(framebuffer, "framebuffer.ppm");
