@@ -1,6 +1,8 @@
 /build
 /.cache
+__pycache__/
 /renders/png
 /renders/ppm
+/scripts/.venv
 .DS_Store
 
