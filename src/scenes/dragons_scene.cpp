@@ -25,7 +25,7 @@ Scene buildDragonsScene(int w, int h) {
   blueMaterial.specularStrength = 4.0f;
   blueMaterial.shininess = 128.0f;
 
-  addObj(scene, std::string(ASSETS_DIR) + "dragon.obj", blueDragon, blueMaterial,
+  addObj(scene, std::string(ASSETS_DIR) + "/obj/dragon.obj", blueDragon, blueMaterial,
          /*shouldRecalcNormals=*/false); // flat shading
 
   Transform redDragon;
@@ -36,10 +36,11 @@ Scene buildDragonsScene(int w, int h) {
   Material redMaterial = blueMaterial;
   redMaterial.baseColor = {210, 30, 70};
 
-  addObj(scene, std::string(ASSETS_DIR) + "dragon.obj", redDragon, redMaterial,
+  addObj(scene, std::string(ASSETS_DIR) + "/obj/dragon.obj", redDragon, redMaterial,
          /*shouldRecalcNormals=*/true); // smooth shading
 
-  static Image checker = checkerTexture(64, 2);
+  static Image checker;
+  ppm::read(std::string(ASSETS_DIR) + "/textures/checker.ppm", checker);
 
   Material planeMaterial;
   planeMaterial.baseColor = {200, 200, 200};
@@ -51,7 +52,7 @@ Scene buildDragonsScene(int w, int h) {
   plane.position = {0.0f, -0.5f, -1.0f};
   plane.scale = {8.0f, 1.0f, 4.0f};
 
-  addObj(scene, std::string(ASSETS_DIR) + "plane.obj", plane, planeMaterial,
+  addObj(scene, std::string(ASSETS_DIR) + "/obj/plane.obj", plane, planeMaterial,
          /*shouldRecalcNormals=*/false);
 
   Vec3 sceneCenter = {0.0f, -0.5f, -1.5f};
