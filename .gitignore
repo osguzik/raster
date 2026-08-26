@@ -1,3 +1,6 @@
 /build
 /.cache
+/renders/png
+/renders/ppm
 .DS_Store
+

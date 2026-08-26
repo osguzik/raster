@@ -5,10 +5,13 @@
 #include "scene.hpp"
 
 #include <cstdlib>
+#include <filesystem>
 #include <iostream>
 #include <limits>
 #include <string>
 #include <vector>
+
+namespace fs = std::filesystem;
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
@@ -37,8 +40,11 @@ int main(int argc, char *argv[]) {
   applyBloom(framebuffer, /*threshold=*/0.7f, /*blurRadius=*/10, /*intensity=*/0.8f);
   Image zbufferImg = zbufferView(zbuffer, w, h, scene.camera.near, scene.camera.far);
 
-  ppm::write(framebuffer, "framebuffer.ppm");
-  ppm::write(zbufferImg, "zbuffer.ppm");
+  std::string ppmDir = std::string(RENDERS_DIR) + "ppm/";
+  fs::create_directories(ppmDir);
+
+  ppm::write(framebuffer, ppmDir + name + "_framebuffer.ppm");
+  ppm::write(zbufferImg, ppmDir + name + "_zbuffer.ppm");
   return 0;
 }
 
