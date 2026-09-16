@@ -8,6 +8,7 @@
 #include "render/shading/lighting.hpp"
 #include "render/shading/shadow.hpp"
 
+#include <algorithm>
 #include <vector>
 
 void triangle(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex &v2,
@@ -23,6 +24,17 @@ void triangle(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex
     zbuffer[idx] = z;
 
     float invW = w0 * v0.invW + w1 * v1.invW + w2 * v2.invW;
+
+    if (material.useVertexColor) {
+      Vec3 color = (v0.color * v0.invW * w0 + v1.color * v1.invW * w1 + v2.color * v2.invW * w2) / invW;
+      img.set(x, y, Color{
+        static_cast<unsigned char>(std::clamp(color.x, 0.0f, 1.0f) * 255.0f),
+        static_cast<unsigned char>(std::clamp(color.y, 0.0f, 1.0f) * 255.0f),
+        static_cast<unsigned char>(std::clamp(color.z, 0.0f, 1.0f) * 255.0f)
+      });
+      return;
+    }
+
     Vec2 uv = (v0.uv * v0.invW * w0 + v1.uv * v1.invW * w1 + v2.uv * v2.invW * w2) / invW;
     Vec3 normal = normalize((v0.normal * v0.invW * w0 + v1.normal * v1.invW * w1 + v2.normal * v2.invW * w2) / invW);
     Vec3 worldPos = (v0.worldPos * v0.invW * w0 + v1.worldPos * v1.invW * w1 + v2.worldPos * v2.invW * w2) / invW;

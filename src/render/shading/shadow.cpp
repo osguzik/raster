@@ -32,9 +32,9 @@ void renderObjShadow(const SceneObj &obj, const Mat4 &lightSpaceMat, float near,
     Vec4 clip2 = mvp * Vec4{modelPos2.x, modelPos2.y, modelPos2.z, 1.0f};
 
     // depth-only
-    ClipVertex cv0 = {clip0, {}, {}, {}};
-    ClipVertex cv1 = {clip1, {}, {}, {}};
-    ClipVertex cv2 = {clip2, {}, {}, {}};
+    ClipVertex cv0 = {clip0, {}, {}, {}, {}};
+    ClipVertex cv1 = {clip1, {}, {}, {}, {}};
+    ClipVertex cv2 = {clip2, {}, {}, {}, {}};
 
     ClipVertex clippedTriangles[2][3];
     int triangleCount = clipNearPlane(cv0, cv1, cv2, near, clippedTriangles);

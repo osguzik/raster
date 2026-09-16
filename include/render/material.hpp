@@ -7,5 +7,6 @@ struct Material {
   const Image *texture = nullptr;
   float specularStrength;
   float shininess;
+  bool useVertexColor = false;
 };
 

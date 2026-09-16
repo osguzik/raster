@@ -7,6 +7,7 @@ struct ClipVertex {
   Vec3 worldPos;
   Vec2 uv;
   Vec3 normal;
+  Vec3 color;
 };
 
 struct ScreenVertex {
@@ -14,6 +15,7 @@ struct ScreenVertex {
   Vec3 worldPos;
   Vec2 uv;
   Vec3 normal;
+  Vec3 color;
   float invW;
 };
 
