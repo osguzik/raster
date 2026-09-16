@@ -77,6 +77,7 @@ int main(int argc, char *argv[]) {
     ppm::write(zbufferImg, ppmDir + name + suffix + "_zbuffer.ppm");
   }
 
+  std::clog << '\n';
   return 0;
 }
 
