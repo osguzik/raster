@@ -14,6 +14,18 @@
 
 namespace fs = std::filesystem;
 
+void progressBar(int frame, int frameNum) {
+  constexpr int barW = 40;
+  float progress = static_cast<float>(frame + 1) / frameNum;
+  int completed = static_cast<int>(progress * barW);
+
+  std::clog << "\r[";
+  for (int i = 0; i < 40; i++) {
+    std::clog << (i < completed ? '#' : '-');
+  }
+  std::clog << "] " << (frame + 1) << "/" << frameNum << ' ' << std::flush;
+}
+
 int main(int argc, char *argv[]) {
   if (argc < 2) {
     std::cerr << "usage: " << argv[0] << " <dragons>\n";
@@ -34,6 +46,7 @@ int main(int argc, char *argv[]) {
   fs::create_directories(ppmDir);
 
   for (int frame = 0; frame < frameNum; frame++) {
+    progressBar(frame, frameNum);
     float t = (frameNum == 1 ? 0.0f : static_cast<float>(frame) / frameNum);
 
     if (name == "dragons") {
