@@ -22,7 +22,8 @@ Scene buildBunnyScene(int w, int h) {
   Material bunnyMaterial;
   bunnyMaterial.useVertexColor = true;
 
-  addObj(scene, std::string(ASSETS_DIR) + "/obj/bunny.obj", bunny, bunnyMaterial, /*shouldRecalcNormals=*/true);
+  addObj(scene, std::string(ASSETS_DIR) + "/obj/bunny.obj", bunny, bunnyMaterial,
+         /*shouldRecalcNormals=*/true);
 
   scene.lightSpaceMat = lightSpaceMat(scene.lighting.lightDir, bunny.position,
                                       /*distance=*/6.0f, /*coverage=*/4.0f, /*near=*/0.1f, /*far=*/12.0f);

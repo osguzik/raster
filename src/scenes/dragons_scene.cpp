@@ -5,12 +5,14 @@
 #include <numbers>
 #include <string>
 
-Scene buildDragonsScene(int w, int h) {
+Scene buildDragonsScene(int w, int h, float t) {
   Scene scene;
 
   scene.camera = defaultCamera(/*ar=*/static_cast<float>(w) / h);
   scene.camera.eye = {0.0f, 1.0f, 1.5f};
   scene.camera.at  = {0.0f, -0.3f, -2.5f};
+
+  float phase = t * 2.0f * std::numbers::pi_v<float>;
 
   scene.lighting = defaultLighting();
   scene.lighting.lightDir = normalize(Vec3{0.0f, 0.2f, 0.4f});
