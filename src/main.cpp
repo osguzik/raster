@@ -26,6 +26,9 @@ int main(int argc, char *argv[]) {
   if (name == "dragons") {
     w = 2048; h = 1024;
     scene = buildDragonsScene(w, h);
+  } else if (name == "bunny") {
+    w = 512; h = 512;
+    scene = buildBunnyScene(w, h);
   } else {
     std::cerr << "error: unknown scene " << name << "\n";
     return 1;
@@ -37,10 +40,14 @@ int main(int argc, char *argv[]) {
 
   renderShadowMap(scene, scene.lightSpaceMat, /*near=*/0.1f, shadowMap, w, h);
   renderScene(scene, framebuffer, zbuffer, w, h, shadowMap);
-  applyBloom(framebuffer, /*threshold=*/0.7f, /*blurRadius=*/10, /*intensity=*/0.8f);
+  if (scene.useBloom) {
+    applyBloom(framebuffer, /*threshold=*/0.7f, /*blurRadius=*/10, /*intensity=*/0.8f);
+  }
+
   Image zbufferImg = zbufferView(zbuffer, w, h, scene.camera.near, scene.camera.far);
 
   std::string ppmDir = std::string(RENDERS_DIR) + "ppm/";
+  fs::remove_all(ppmDir);
   fs::create_directories(ppmDir);
 
   ppm::write(framebuffer, ppmDir + name + "_framebuffer.ppm");

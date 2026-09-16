@@ -21,6 +21,7 @@ struct Scene {
   Lighting lighting;
   std::vector<SceneObj> objects;
   Mat4 lightSpaceMat;
+  bool useBloom = false;
 };
 
 Camera defaultCamera(float ar);
@@ -32,4 +33,6 @@ SceneObj addObj(Scene &scene, const std::string &filename, const Transform &tran
 void renderScene(const Scene &scene, Image &framebuffer, std::vector<float> &zbuffer, int w, int h, const std::vector<float> &shadowMap);
 
 Scene buildDragonsScene(int w, int h);
+
+Scene buildBunnyScene(int w, int h);
 

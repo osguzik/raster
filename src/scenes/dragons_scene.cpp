@@ -15,6 +15,8 @@ Scene buildDragonsScene(int w, int h) {
   scene.lighting = defaultLighting();
   scene.lighting.lightDir = normalize(Vec3{0.0f, 0.2f, 0.4f});
 
+  scene.useBloom = true;
+
   Transform blueDragon;
   blueDragon.position = {-1.25f, -0.5f, -2.0f};
   blueDragon.rotation.y = std::numbers::pi_v<float>;
