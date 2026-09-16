@@ -1,6 +1,7 @@
 /build
 /.cache
 __pycache__/
+/renders/gif
 /renders/png
 /renders/ppm
 /scripts/.venv
