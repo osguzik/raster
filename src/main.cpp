@@ -17,7 +17,7 @@ namespace fs = std::filesystem;
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
-    std::cerr << "usage: " << argv[0] << " <dragons>\n";
+    std::cerr << "usage: " << argv[0] << " <bunny|dragons> [--frames N]\n";
     return 1;
   }
 
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
   Scene scene;
   int w, h;
 
-  std::string ppmDir = std::string(RENDERS_DIR) + "ppm/";
+  std::string ppmDir = std::string(RENDERS_DIR) + "/ppm/";
   fs::remove_all(ppmDir);
   fs::create_directories(ppmDir);
 
@@ -45,6 +45,7 @@ int main(int argc, char *argv[]) {
       w = 512; h = 512;
       scene = buildBunnyScene(w, h);
     } else {
+      std::clog << '\n';
       std::cerr << "error: unknown scene " << name << "\n";
       return 1;
     }

@@ -37,12 +37,14 @@ namespace ppm {
 bool write(const Image &img, const std::string &filename) {
   std::ofstream out(filename, std::ios::binary);
   if (!out.is_open()) {
+    std::clog << '\n';
     std::cerr << "error: failed to open file " << filename << "\n";
     return false;
   }
   out << "P6\n" << img.w << " " << img.h << "\n255\n";
   out.write(reinterpret_cast<const char *>(img.pixels.data()), img.pixels.size());
   if (!out.good()) {
+    std::clog << '\n';
     std::cerr << "error: failed to write to file " << filename << "\n";
     return false;
   }
@@ -52,6 +54,7 @@ bool write(const Image &img, const std::string &filename) {
 bool read(const std::string &filename, Image &img) {
   std::ifstream in(filename, std::ios::binary);
   if (!in.is_open()) {
+    std::clog << '\n';
     std::cerr << "error: failed to open file " << filename << "\n";
     return false;
   }
@@ -65,6 +68,7 @@ bool read(const std::string &filename, Image &img) {
   in.read(reinterpret_cast<char *>(img.pixels.data()), img.pixels.size());
 
   if (!in.good()) {
+    std::clog << '\n';
     std::cerr << "error: failed to read file " << filename << "\n";
     return false;
   }

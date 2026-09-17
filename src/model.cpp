@@ -34,6 +34,7 @@ Model loadModel(const std::string& filename, bool shouldRecalcNormals) {
   Model model;
   std::ifstream in(filename);
   if (!in) {
+    std::clog << '\n';
     std::cerr << "error: failed to read file " << filename << "\n";
     exit(1);
   }
@@ -92,6 +93,7 @@ Model loadModel(const std::string& filename, bool shouldRecalcNormals) {
 
   // normals are required
   if (model.normals.empty() && !shouldRecalcNormals) {
+    std::clog << '\n';
     std::cerr << "error: file " << filename << " has no vertex normals (vn)\n";
     exit(1);
   }

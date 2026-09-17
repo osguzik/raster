@@ -9,8 +9,8 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp")
 add_executable(rasterizer ${SOURCES})
 target_include_directories(rasterizer PRIVATE include)
 target_compile_definitions(rasterizer PRIVATE
-  ASSETS_DIR="${CMAKE_SOURCE_DIR}/assets/"
-  RENDERS_DIR="${CMAKE_SOURCE_DIR}/renders/"
+  ASSETS_DIR="${CMAKE_SOURCE_DIR}/assets"
+  RENDERS_DIR="${CMAKE_SOURCE_DIR}/renders"
 )
 target_compile_options(rasterizer PRIVATE -Wall -Wextra
   $<$<CONFIG:Debug>:-g -O0>
