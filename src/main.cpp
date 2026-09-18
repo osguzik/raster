@@ -38,12 +38,12 @@ int main(int argc, char *argv[]) {
     progressBar(frame, frameNum);
     float t = (frameNum == 1 ? 0.0f : static_cast<float>(frame) / frameNum);
 
-    if (name == "dragons") {
-      w = 2048; h = 1024;
-      scene = buildDragonsScene(w, h, t);
-    } else if (name == "bunny") {
+    if (name == "bunny") {
       w = 512; h = 512;
       scene = buildBunnyScene(w, h);
+    } else if (name == "dragons") {
+      w = 2048; h = 1024;
+      scene = buildDragonsScene(w, h, t);
     } else {
       std::clog << '\n';
       std::cerr << "error: unknown scene " << name << "\n";
@@ -63,11 +63,25 @@ int main(int argc, char *argv[]) {
     Image zbufferImg = zbufferView(zbuffer, w, h, scene.camera.near, scene.camera.far);
 
     std::string suffix = (frameNum == 1 ? "" : std::format("{:04d}", frame));
-    ppm::write(framebuffer, ppmDir + name + suffix + "_framebuffer.ppm");
-    ppm::write(zbufferImg, ppmDir + name + suffix + "_zbuffer.ppm");
+    std::string framebufferPath = ppmDir + name + suffix + "_framebuffer.ppm";
+    std::string zbufferPath = ppmDir + name + suffix + "_zbuffer.ppm";
+
+    ppm::write(framebuffer, framebufferPath);
+    ppm::write(zbufferImg, zbufferPath);
+
+    if (frameNum == 1) {
+      std::clog << '\n';
+      std::clog << "wrote " << framebufferPath << '\n';
+      std::clog << "wrote " << zbufferPath << '\n';
+    }
   }
 
-  std::clog << '\n';
+  if (frameNum > 1) {
+    std::clog << '\n';
+    std::clog << "wrote " << frameNum << " frames of " << name << "*_framebuffer to " << ppmDir << '\n';
+    std::clog << "wrote " << frameNum << " frames of " << name << "*_zbuffer to " << ppmDir << '\n';
+  }
+
   return 0;
 }
 
