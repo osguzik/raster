@@ -11,13 +11,16 @@ Scene buildBunnyScene(int w, int h) {
   scene.camera = defaultCamera(static_cast<float>(w) / h);
   scene.camera.eye = {0.0f, 0.0f, 2.0f};
   scene.camera.at = {0.0f, 0.0f, -2.0f};
+  scene.camera.fovY = std::numbers::pi_v<float> / 6.0f;
 
   scene.lighting = defaultLighting();
 
+  scene.backgroundColor = {0, 0, 0};
+
   Transform bunny;
-  bunny.position = {0.2f, -0.2f, -3.0f};
+  bunny.position = {0.3f, -0.4f, -6.0f};
   bunny.rotation.y = std::numbers::pi_v<float> * 2.0f;
-  bunny.scale = {1.0f, 1.0f, 1.0f};
+  bunny.scale = {1.6f, 1.6f, 1.6f};
 
   Material bunnyMaterial;
   bunnyMaterial.useVertexColor = true;

@@ -39,8 +39,11 @@ int main(int argc, char *argv[]) {
     float t = (frameNum == 1 ? 0.0f : static_cast<float>(frame) / frameNum);
 
     if (name == "bunny") {
-      w = 512; h = 512;
+      w = 1024; h = 720;
       scene = buildBunnyScene(w, h);
+    } else if (name == "depth_demo") {
+      w = 1024; h = 720;
+      scene = buildDepthDemoScene(w, h, t);
     } else if (name == "dragons") {
       w = 2048; h = 1024;
       scene = buildDragonsScene(w, h, t);

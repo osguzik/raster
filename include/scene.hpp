@@ -37,3 +37,5 @@ Scene buildDragonsScene(int w, int h, float t);
 
 Scene buildBunnyScene(int w, int h);
 
+Scene buildDepthDemoScene(int w, int h, float t);
+
