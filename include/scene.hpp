@@ -22,6 +22,7 @@ struct Scene {
   std::vector<SceneObj> objects;
   Mat4 lightSpaceMat;
   bool useBloom = false;
+  Color backgroundColor;
 };
 
 Camera defaultCamera(float ar);

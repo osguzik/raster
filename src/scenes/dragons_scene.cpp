@@ -20,6 +20,7 @@ Scene buildDragonsScene(int w, int h, float t) {
   scene.lighting.lightDir = normalize(Vec3{std::sin(phase), 0.5f, std::cos(phase)});
 
   scene.useBloom = true;
+  scene.backgroundColor = {0, 0, 0};
 
   Transform blueDragon;
   blueDragon.position = {-0.6f, 0.0f, -0.2f};

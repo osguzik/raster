@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
       return 1;
     }
 
-    Image framebuffer(w, h);
+    Image framebuffer(w, h, scene.backgroundColor);
     std::vector<float> zbuffer(w * h, std::numeric_limits<float>::max());
     std::vector<float> shadowMap(w * h);
 
