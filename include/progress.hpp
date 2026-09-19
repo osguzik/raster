@@ -13,4 +13,3 @@ inline void progressBar(int frame, int frameNum) {
   }
   std::clog << "] " << (frame + 1) << "/" << frameNum << ' ' << std::flush;
 }
-

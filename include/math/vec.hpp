@@ -21,15 +21,12 @@ struct Vec3 {
 };
 
 inline float dot(const Vec3 &v1, const Vec3 &v2) {
-    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+  return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
 inline Vec3 cross(const Vec3 &v1, const Vec3 &v2) {
-  return {
-    v1.y * v2.z - v1.z * v2.y,
-    v1.z * v2.x - v1.x * v2.z,
-    v1.x * v2.y - v1.y * v2.x
-  };
+  return {v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z,
+          v1.x * v2.y - v1.y * v2.x};
 }
 
 inline Vec3 normalize(const Vec3 &v) {
@@ -40,11 +37,14 @@ inline Vec3 normalize(const Vec3 &v) {
 struct Vec4 {
   float x = 0, y = 0, z = 0, w = 0;
 
-  Vec4 operator+(const Vec4 &v) const { return {x + v.x, y + v.y, z + v.z, w + v.w}; }
-  Vec4 operator-(const Vec4 &v) const { return {x - v.x, y - v.y, z - v.z, w - v.w}; }
+  Vec4 operator+(const Vec4 &v) const {
+    return {x + v.x, y + v.y, z + v.z, w + v.w};
+  }
+  Vec4 operator-(const Vec4 &v) const {
+    return {x - v.x, y - v.y, z - v.z, w - v.w};
+  }
   Vec4 operator*(float s) const { return {x * s, y * s, z * s, w * s}; }
 
   float operator[](int i) const { return (&x)[i]; }
   float &operator[](int i) { return (&x)[i]; }
 };
-

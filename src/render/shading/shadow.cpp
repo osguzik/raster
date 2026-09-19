@@ -16,7 +16,8 @@
 
 namespace {
 
-void renderObjShadow(const SceneObj &obj, const Mat4 &lightSpaceMat, float near, std::vector<float> &shadowMap, int w, int h) {
+void renderObjShadow(const SceneObj &obj, const Mat4 &lightSpaceMat, float near,
+                     std::vector<float> &shadowMap, int w, int h) {
   const Model &model = obj.model;
   Mat4 modelTransform = modelMat(obj.transform);
   Mat4 mvp = lightSpaceMat * modelTransform;
@@ -44,33 +45,36 @@ void renderObjShadow(const SceneObj &obj, const Mat4 &lightSpaceMat, float near,
       ScreenVertex sv1 = toScreen(clippedTriangles[j][1], vp);
       ScreenVertex sv2 = toScreen(clippedTriangles[j][2], vp);
 
-      rasterize(sv0, sv1, sv2, w, h, [&](int x, int y, float w0, float w1, float w2) {
-        float z = w0 * sv0.pos.z + w1 * sv1.pos.z + w2 * sv2.pos.z;
-        int idx = y * w + x;
-        if (z < shadowMap[idx]) {
-          shadowMap[idx] = z;
-        }
-      });
+      rasterize(sv0, sv1, sv2, w, h,
+                [&](int x, int y, float w0, float w1, float w2) {
+                  float z = w0 * sv0.pos.z + w1 * sv1.pos.z + w2 * sv2.pos.z;
+                  int idx = y * w + x;
+                  if (z < shadowMap[idx]) {
+                    shadowMap[idx] = z;
+                  }
+                });
     }
   }
 }
 
-}
+} // namespace
 
-void renderShadowMap(const Scene &scene, const Mat4 &lightSpaceMat, float near, std::vector<float> &shadowMap, int w, int h) {
-  std::fill(shadowMap.begin(), shadowMap.end(), std::numeric_limits<float>::max());
+void renderShadowMap(const Scene &scene, const Mat4 &lightSpaceMat, float near,
+                     std::vector<float> &shadowMap, int w, int h) {
+  std::fill(shadowMap.begin(), shadowMap.end(),
+            std::numeric_limits<float>::max());
   for (const SceneObj &obj : scene.objects) {
     renderObjShadow(obj, lightSpaceMat, near, shadowMap, w, h);
   }
 }
 
-float calcShadow(const Vec3 &worldPos, const Mat4 &lightSpaceMat, const std::vector<float> &shadowMap, int w, int h) {
-  Vec4 lightSpacePos = lightSpaceMat * Vec4{worldPos.x, worldPos.y, worldPos.z, 1.0f};
-  Vec3 projCoords = {
-    lightSpacePos.x / lightSpacePos.w,
-    lightSpacePos.y / lightSpacePos.w,
-    lightSpacePos.z / lightSpacePos.w
-  };
+float calcShadow(const Vec3 &worldPos, const Mat4 &lightSpaceMat,
+                 const std::vector<float> &shadowMap, int w, int h) {
+  Vec4 lightSpacePos =
+      lightSpaceMat * Vec4{worldPos.x, worldPos.y, worldPos.z, 1.0f};
+  Vec3 projCoords = {lightSpacePos.x / lightSpacePos.w,
+                     lightSpacePos.y / lightSpacePos.w,
+                     lightSpacePos.z / lightSpacePos.w};
 
   float u = projCoords.x * 0.5f + 0.5f;
   float v = 1.0f - (projCoords.y * 0.5f + 0.5f);
@@ -96,4 +100,3 @@ float calcShadow(const Vec3 &worldPos, const Mat4 &lightSpaceMat, const std::vec
 
   return factor / sampleCount;
 }
-

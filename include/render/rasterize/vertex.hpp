@@ -18,4 +18,3 @@ struct ScreenVertex {
   Vec3 color;
   float invW;
 };
-

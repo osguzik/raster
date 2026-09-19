@@ -40,7 +40,8 @@ std::vector<float> gaussianKernel(int radius) {
   return kernel;
 }
 
-Image applyBlur(const Image &img, const std::vector<float> &kernel, int radius, bool horizontal) {
+Image applyBlur(const Image &img, const std::vector<float> &kernel, int radius,
+                bool horizontal) {
   Image result(img.w, img.h, Color{0, 0, 0});
 
   for (int y = 0; y < img.h; y++) {
@@ -67,11 +68,10 @@ Image applyBlur(const Image &img, const std::vector<float> &kernel, int radius, 
         sumB += sample.b * weight;
       }
 
-      result.set(x, y, Color{
-        static_cast<uint8_t>(std::clamp(sumR, 0.0f, 255.0f)),
-        static_cast<uint8_t>(std::clamp(sumG, 0.0f, 255.0f)),
-        static_cast<uint8_t>(std::clamp(sumB, 0.0f, 255.0f))
-      });
+      result.set(x, y,
+                 Color{static_cast<uint8_t>(std::clamp(sumR, 0.0f, 255.0f)),
+                       static_cast<uint8_t>(std::clamp(sumG, 0.0f, 255.0f)),
+                       static_cast<uint8_t>(std::clamp(sumB, 0.0f, 255.0f))});
     }
   }
   return result;
@@ -84,7 +84,7 @@ Image gaussianBlur(const Image &img, int radius) {
   return applyBlur(horizontal, kernel, radius, /*horizontal=*/false);
 }
 
-}
+} // namespace
 
 void applyBloom(Image &img, float threshold, int blurRadius, float intensity) {
   Image bright = extractLight(img, threshold);
@@ -95,12 +95,14 @@ void applyBloom(Image &img, float threshold, int blurRadius, float intensity) {
       Color base = img.get(x, y);
       Color glow = blurred.get(x, y);
       Color combined = {
-        static_cast<std::uint8_t>(std::clamp(base.r + glow.r * intensity, 0.0f, 255.0f)),
-        static_cast<std::uint8_t>(std::clamp(base.g + glow.g * intensity, 0.0f, 255.0f)),
-        static_cast<std::uint8_t>(std::clamp(base.b + glow.b * intensity, 0.0f, 255.0f)),
+          static_cast<std::uint8_t>(
+              std::clamp(base.r + glow.r * intensity, 0.0f, 255.0f)),
+          static_cast<std::uint8_t>(
+              std::clamp(base.g + glow.g * intensity, 0.0f, 255.0f)),
+          static_cast<std::uint8_t>(
+              std::clamp(base.b + glow.b * intensity, 0.0f, 255.0f)),
       };
       img.set(x, y, combined);
     }
   }
 }
-

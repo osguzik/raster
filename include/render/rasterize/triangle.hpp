@@ -16,13 +16,15 @@ inline float edge(const Vec3 &p, const Vec3 &a, const Vec3 &dir) {
 }
 
 template <typename FragmentShader>
-void rasterize(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex &v2,
-               int w, int h, FragmentShader fragmentShader) {
+void rasterize(const ScreenVertex &v0, const ScreenVertex &v1,
+               const ScreenVertex &v2, int w, int h,
+               FragmentShader fragmentShader) {
   const Vec3 &p0 = v0.pos;
   const Vec3 &p1 = v1.pos;
   const Vec3 &p2 = v2.pos;
 
-  float signedArea = (p1.x - p0.x) * (p2.y - p0.y) - (p1.y - p0.y) * (p2.x - p0.x);
+  float signedArea =
+      (p1.x - p0.x) * (p2.y - p0.y) - (p1.y - p0.y) * (p2.x - p0.x);
   if (signedArea >= 0.0f) { // back-facing
     return;
   }
@@ -32,10 +34,14 @@ void rasterize(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVerte
   Vec3 dir1 = {p2.x - p1.x, p2.y - p1.y};
   Vec3 dir2 = {p0.x - p2.x, p0.y - p2.y};
 
-  int minX = std::max(static_cast<int>(std::floor(std::min({p0.x, p1.x, p2.x}))), 0);
-  int maxX = std::min(static_cast<int>(std::ceil(std::max({p0.x, p1.x, p2.x}))), w - 1);
-  int minY = std::max(static_cast<int>(std::floor(std::min({p0.y, p1.y, p2.y}))), 0);
-  int maxY = std::min(static_cast<int>(std::ceil(std::max({p0.y, p1.y, p2.y}))), h - 1);
+  int minX =
+      std::max(static_cast<int>(std::floor(std::min({p0.x, p1.x, p2.x}))), 0);
+  int maxX = std::min(static_cast<int>(std::ceil(std::max({p0.x, p1.x, p2.x}))),
+                      w - 1);
+  int minY =
+      std::max(static_cast<int>(std::floor(std::min({p0.y, p1.y, p2.y}))), 0);
+  int maxY = std::min(static_cast<int>(std::ceil(std::max({p0.y, p1.y, p2.y}))),
+                      h - 1);
   if (minX > maxX || minY > maxY) {
     return;
   }
@@ -64,8 +70,7 @@ void rasterize(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVerte
   }
 }
 
-void triangle(const ScreenVertex &v0, const ScreenVertex &v1, const ScreenVertex &v2,
-              Image &img, std::vector<float> &zbuffer,
+void triangle(const ScreenVertex &v0, const ScreenVertex &v1,
+              const ScreenVertex &v2, Image &img, std::vector<float> &zbuffer,
               Lighting lighting, const Material &material, const Vec3 &eye,
               const Mat4 &lightSpaceMat, const std::vector<float> &shadowMap);
-

@@ -10,4 +10,3 @@ Mat4 viewMat(const Camera &camera) {
 Mat4 projectionMat(const Camera &camera) {
   return perspective(camera.fovY, camera.ar, camera.near, camera.far);
 }
-

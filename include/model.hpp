@@ -15,5 +15,4 @@ struct Model {
   bool uvsPresent = false;
 };
 
-Model loadModel(const std::string& filename, bool shouldRecalcNormals = false);
-
+Model loadModel(const std::string &filename, bool shouldRecalcNormals = false);

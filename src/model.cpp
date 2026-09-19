@@ -13,7 +13,8 @@ void recalcNormals(Model &model) {
   std::vector<Vec3> vertexNormals(model.verts.size(), Vec3{0.0f, 0.0f, 0.0f});
 
   for (size_t i = 0; i < faceCount; i++) {
-    int v0 = model.faces[i * 3], v1 = model.faces[i * 3 + 1], v2 = model.faces[i * 3 + 2];
+    int v0 = model.faces[i * 3], v1 = model.faces[i * 3 + 1],
+        v2 = model.faces[i * 3 + 2];
     Vec3 edge1 = model.verts[v1] - model.verts[v0];
     Vec3 edge2 = model.verts[v2] - model.verts[v0];
     Vec3 faceNormal = cross(edge1, edge2);
@@ -30,7 +31,7 @@ void recalcNormals(Model &model) {
   model.normalFaces = model.faces;
 }
 
-Model loadModel(const std::string& filename, bool shouldRecalcNormals) {
+Model loadModel(const std::string &filename, bool shouldRecalcNormals) {
   Model model;
   std::ifstream in(filename);
   if (!in) {
@@ -104,4 +105,3 @@ Model loadModel(const std::string& filename, bool shouldRecalcNormals) {
 
   return model;
 }
-

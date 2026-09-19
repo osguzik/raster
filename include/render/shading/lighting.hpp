@@ -1,8 +1,8 @@
 #pragma once
 
 #include "image.hpp"
-#include "render/material.hpp"
 #include "math/vec.hpp"
+#include "render/material.hpp"
 
 struct Lighting {
   Vec3 lightDir;
@@ -11,5 +11,5 @@ struct Lighting {
   Color lightColor;
 };
 
-Color blinnPhong(const Vec3 &normal, const Vec2 &uv, const Lighting &lighting, const Material &material, float shadow);
-
+Color blinnPhong(const Vec3 &normal, const Vec2 &uv, const Lighting &lighting,
+                 const Material &material, float shadow);

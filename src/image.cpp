@@ -19,7 +19,7 @@ Color Image::get(int x, int y) const {
 }
 
 void Image::set(int x, int y, const Color &color) {
-  uint8_t* row = pixels.data() + y * w * 3;
+  uint8_t *row = pixels.data() + y * w * 3;
   int i = x * 3;
   row[i] = color.r;
   row[i + 1] = color.g;
@@ -42,7 +42,8 @@ bool write(const Image &img, const std::string &filename) {
     return false;
   }
   out << "P6\n" << img.w << " " << img.h << "\n255\n";
-  out.write(reinterpret_cast<const char *>(img.pixels.data()), img.pixels.size());
+  out.write(reinterpret_cast<const char *>(img.pixels.data()),
+            img.pixels.size());
   if (!out.good()) {
     std::clog << '\n';
     std::cerr << "error: failed to write to file " << filename << "\n";
@@ -75,5 +76,4 @@ bool read(const std::string &filename, Image &img) {
   return true;
 }
 
-}
-
+} // namespace ppm

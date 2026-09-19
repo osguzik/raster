@@ -4,5 +4,5 @@
 
 #include <vector>
 
-Image zbufferView(const std::vector<float> &zbuffer, int w, int h, float near, float far);
-
+Image zbufferView(const std::vector<float> &zbuffer, int w, int h, float near,
+                  float far);

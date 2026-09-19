@@ -26,5 +26,4 @@ bool write(const Image &img, const std::string &filename);
 
 bool read(const std::string &filename, Image &img);
 
-}
-
+} // namespace ppm

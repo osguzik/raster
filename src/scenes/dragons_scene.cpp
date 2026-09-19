@@ -12,12 +12,13 @@ Scene buildDragonsScene(int w, int h, float t) {
 
   scene.camera = defaultCamera(/*ar=*/static_cast<float>(w) / h);
   scene.camera.eye = {0.0f, 1.0f, 1.5f};
-  scene.camera.at  = {0.0f, -0.5f, -2.5f};
+  scene.camera.at = {0.0f, -0.5f, -2.5f};
 
   float phase = t * 2.0f * std::numbers::pi_v<float>;
 
   scene.lighting = defaultLighting();
-  scene.lighting.lightDir = normalize(Vec3{std::sin(phase), 0.5f, std::cos(phase)});
+  scene.lighting.lightDir =
+      normalize(Vec3{std::sin(phase), 0.5f, std::cos(phase)});
 
   scene.useBloom = true;
   scene.backgroundColor = {0, 0, 0};
@@ -32,7 +33,8 @@ Scene buildDragonsScene(int w, int h, float t) {
   blueMaterial.specularStrength = 4.0f;
   blueMaterial.shininess = 128.0f;
 
-  addObj(scene, std::string(ASSETS_DIR) + "/obj/dragon.obj", blueDragon, blueMaterial,
+  addObj(scene, std::string(ASSETS_DIR) + "/obj/dragon.obj", blueDragon,
+         blueMaterial,
          /*shouldRecalcNormals=*/false); // flat shading
 
   Transform redDragon;
@@ -44,7 +46,8 @@ Scene buildDragonsScene(int w, int h, float t) {
   Material redMaterial = blueMaterial;
   redMaterial.baseColor = {210, 30, 70};
 
-  addObj(scene, std::string(ASSETS_DIR) + "/obj/dragon.obj", redDragon, redMaterial,
+  addObj(scene, std::string(ASSETS_DIR) + "/obj/dragon.obj", redDragon,
+         redMaterial,
          /*shouldRecalcNormals=*/true); // smooth shading
 
   static Image checker;
@@ -60,13 +63,14 @@ Scene buildDragonsScene(int w, int h, float t) {
   plane.position = {0.0f, 0.0f, -1.0f};
   plane.scale = {8.0f, 1.0f, 4.0f};
 
-  addObj(scene, std::string(ASSETS_DIR) + "/obj/plane.obj", plane, planeMaterial,
+  addObj(scene, std::string(ASSETS_DIR) + "/obj/plane.obj", plane,
+         planeMaterial,
          /*shouldRecalcNormals=*/false);
 
   Vec3 sceneCenter = {0.0f, -0.5f, -1.5f};
   scene.lightSpaceMat = lightSpaceMat(scene.lighting.lightDir, sceneCenter,
-                                      /*distance=*/6.0f, /*coverage=*/8.0f, /*near=*/0.1f, /*far=*/12.0f);
+                                      /*distance=*/6.0f, /*coverage=*/8.0f,
+                                      /*near=*/0.1f, /*far=*/12.0f);
 
   return scene;
 }
-

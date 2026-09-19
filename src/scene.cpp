@@ -22,7 +22,8 @@ Vec3 transformPoint(const Mat4 &m, const Vec3 &point) {
   return {result.x, result.y, result.z};
 }
 
-void renderObj(const SceneObj &obj, const Camera &camera, Lighting lighting, Image &framebuffer, std::vector<float> &zbuffer, int w, int h,
+void renderObj(const SceneObj &obj, const Camera &camera, Lighting lighting,
+               Image &framebuffer, std::vector<float> &zbuffer, int w, int h,
                const Mat4 &lightSpaceMat, const std::vector<float> &shadowMap) {
   const Model &model = obj.model;
 
@@ -40,33 +41,39 @@ void renderObj(const SceneObj &obj, const Camera &camera, Lighting lighting, Ima
     Vec3 worldPos1 = transformPoint(modelTransform, modelPos1);
     Vec3 worldPos2 = transformPoint(modelTransform, modelPos2);
 
-    ClipVertex clip0 = toClip(modelPos0, worldPos0, model.normals[model.normalFaces[i * 3]], model.uvs[model.uvFaces[i * 3]], mvp, normalMat);
-    ClipVertex clip1 = toClip(modelPos1, worldPos1, model.normals[model.normalFaces[i * 3 + 1]], model.uvs[model.uvFaces[i * 3 + 1]], mvp, normalMat);
-    ClipVertex clip2 = toClip(modelPos2, worldPos2, model.normals[model.normalFaces[i * 3 + 2]], model.uvs[model.uvFaces[i * 3 + 2]], mvp, normalMat);
+    ClipVertex clip0 =
+        toClip(modelPos0, worldPos0, model.normals[model.normalFaces[i * 3]],
+               model.uvs[model.uvFaces[i * 3]], mvp, normalMat);
+    ClipVertex clip1 = toClip(
+        modelPos1, worldPos1, model.normals[model.normalFaces[i * 3 + 1]],
+        model.uvs[model.uvFaces[i * 3 + 1]], mvp, normalMat);
+    ClipVertex clip2 = toClip(
+        modelPos2, worldPos2, model.normals[model.normalFaces[i * 3 + 2]],
+        model.uvs[model.uvFaces[i * 3 + 2]], mvp, normalMat);
 
     ClipVertex clippedTriangles[2][3];
-    int triangleCount = clipNearPlane(clip0, clip1, clip2, camera.near, clippedTriangles);
+    int triangleCount =
+        clipNearPlane(clip0, clip1, clip2, camera.near, clippedTriangles);
     for (int j = 0; j < triangleCount; j++) {
       ScreenVertex sv0 = toScreen(clippedTriangles[j][0], vp);
       ScreenVertex sv1 = toScreen(clippedTriangles[j][1], vp);
       ScreenVertex sv2 = toScreen(clippedTriangles[j][2], vp);
-      triangle(sv0, sv1, sv2, framebuffer, zbuffer, lighting, obj.material, camera.eye, lightSpaceMat, shadowMap);
+      triangle(sv0, sv1, sv2, framebuffer, zbuffer, lighting, obj.material,
+               camera.eye, lightSpaceMat, shadowMap);
     }
   }
 }
 
-}
+} // namespace
 
 Camera defaultCamera(float ar) {
-  return Camera {
-    .eye = {0.0f, 0.0f, 1.0f},
-    .at = {0.0f, 0.0f, -2.0f},
-    .up = {0.0f, 1.0f, 0.0f},
-    .fovY = std::numbers::pi_v<float> / 4.0f,
-    .ar = ar,
-    .near = 0.1f,
-    .far = 10.0f
-  };
+  return Camera{.eye = {0.0f, 0.0f, 1.0f},
+                .at = {0.0f, 0.0f, -2.0f},
+                .up = {0.0f, 1.0f, 0.0f},
+                .fovY = std::numbers::pi_v<float> / 4.0f,
+                .ar = ar,
+                .near = 0.1f,
+                .far = 10.0f};
 }
 
 Lighting defaultLighting() {
@@ -77,15 +84,19 @@ Lighting defaultLighting() {
   return lighting;
 }
 
-SceneObj addObj(Scene &scene, const std::string &filename, const Transform &transform, const Material &material, bool shouldRecalcNormals) {
+SceneObj addObj(Scene &scene, const std::string &filename,
+                const Transform &transform, const Material &material,
+                bool shouldRecalcNormals) {
   Model model = loadModel(filename, shouldRecalcNormals);
   scene.objects.push_back({std::move(model), transform, material});
   return scene.objects.back();
 }
 
-void renderScene(const Scene &scene, Image &framebuffer, std::vector<float> &zbuffer, int w, int h, const std::vector<float> &shadowMap) {
+void renderScene(const Scene &scene, Image &framebuffer,
+                 std::vector<float> &zbuffer, int w, int h,
+                 const std::vector<float> &shadowMap) {
   for (const SceneObj &obj : scene.objects) {
-    renderObj(obj, scene.camera, scene.lighting, framebuffer, zbuffer, w, h, scene.lightSpaceMat, shadowMap);
+    renderObj(obj, scene.camera, scene.lighting, framebuffer, zbuffer, w, h,
+              scene.lightSpaceMat, shadowMap);
   }
 }
-

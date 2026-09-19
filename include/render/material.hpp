@@ -9,4 +9,3 @@ struct Material {
   float shininess;
   bool useVertexColor = false;
 };
-

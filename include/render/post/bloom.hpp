@@ -3,4 +3,3 @@
 #include "image.hpp"
 
 void applyBloom(Image &img, float threshold, int blurRadius, float intensity);
-

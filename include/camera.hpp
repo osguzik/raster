@@ -16,4 +16,3 @@ struct Camera {
 Mat4 viewMat(const Camera &camera);
 
 Mat4 projectionMat(const Camera &camera);
-

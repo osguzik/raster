@@ -39,13 +39,16 @@ int main(int argc, char *argv[]) {
     float t = (frameNum == 1 ? 0.0f : static_cast<float>(frame) / frameNum);
 
     if (name == "bunny") {
-      w = 1024; h = 720;
+      w = 1024;
+      h = 720;
       scene = buildBunnyScene(w, h);
     } else if (name == "depth_demo") {
-      w = 1024; h = 720;
+      w = 1024;
+      h = 720;
       scene = buildDepthDemoScene(w, h, t);
     } else if (name == "dragons") {
-      w = 2048; h = 1024;
+      w = 2048;
+      h = 1024;
       scene = buildDragonsScene(w, h, t);
     } else {
       std::clog << '\n';
@@ -60,10 +63,12 @@ int main(int argc, char *argv[]) {
     renderShadowMap(scene, scene.lightSpaceMat, /*near=*/0.1f, shadowMap, w, h);
     renderScene(scene, framebuffer, zbuffer, w, h, shadowMap);
     if (scene.useBloom) {
-      applyBloom(framebuffer, /*threshold=*/0.7f, /*blurRadius=*/10, /*intensity=*/0.8f);
+      applyBloom(framebuffer, /*threshold=*/0.7f, /*blurRadius=*/10,
+                 /*intensity=*/0.8f);
     }
 
-    Image zbufferImg = zbufferView(zbuffer, w, h, scene.camera.near, scene.camera.far);
+    Image zbufferImg =
+        zbufferView(zbuffer, w, h, scene.camera.near, scene.camera.far);
 
     std::string suffix = (frameNum == 1 ? "" : std::format("{:04d}", frame));
     std::string framebufferPath = ppmDir + name + suffix + "_framebuffer.ppm";
@@ -81,10 +86,11 @@ int main(int argc, char *argv[]) {
 
   if (frameNum > 1) {
     std::clog << '\n';
-    std::clog << "wrote " << frameNum << " frames of " << name << "*_framebuffer to " << ppmDir << '\n';
-    std::clog << "wrote " << frameNum << " frames of " << name << "*_zbuffer to " << ppmDir << '\n';
+    std::clog << "wrote " << frameNum << " frames of " << name
+              << "*_framebuffer to " << ppmDir << '\n';
+    std::clog << "wrote " << frameNum << " frames of " << name
+              << "*_zbuffer to " << ppmDir << '\n';
   }
 
   return 0;
 }
-

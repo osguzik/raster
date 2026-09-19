@@ -29,13 +29,16 @@ Camera defaultCamera(float ar);
 
 Lighting defaultLighting();
 
-SceneObj addObj(Scene &scene, const std::string &filename, const Transform &transform, const Material &material, bool shouldRecalcNormals);
+SceneObj addObj(Scene &scene, const std::string &filename,
+                const Transform &transform, const Material &material,
+                bool shouldRecalcNormals);
 
-void renderScene(const Scene &scene, Image &framebuffer, std::vector<float> &zbuffer, int w, int h, const std::vector<float> &shadowMap);
+void renderScene(const Scene &scene, Image &framebuffer,
+                 std::vector<float> &zbuffer, int w, int h,
+                 const std::vector<float> &shadowMap);
 
 Scene buildDragonsScene(int w, int h, float t);
 
 Scene buildBunnyScene(int w, int h);
 
 Scene buildDepthDemoScene(int w, int h, float t);
-
