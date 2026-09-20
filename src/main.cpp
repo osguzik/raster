@@ -47,8 +47,8 @@ int main(int argc, char *argv[]) {
       h = 720;
       scene = buildDepthDemoScene(w, h, t);
     } else if (name == "dragons") {
-      w = 2048;
-      h = 1024;
+      w = 1440;
+      h = 720;
       scene = buildDragonsScene(w, h, t);
     } else {
       std::clog << '\n';
