@@ -42,7 +42,7 @@ python3 scripts/frames_to_gif.py
 
 ## Roadmap
 
-- SIMD rasterization
+- SIMD optimization (AVX2)
 
 ## References
 
