@@ -32,6 +32,9 @@ void renderObj(const SceneObj &obj, const Camera &camera, Lighting lighting,
   Mat4 vp = viewport(0, 0, w, h);
   Mat3 normalMat = transpose(inverse(upperLeft3(modelTransform)));
 
+  ShadingContext shading{lighting, obj.material, camera.eye, lightSpaceMat,
+                         shadowMap};
+
   for (int i = 0; i < static_cast<int>(model.faces.size() / 3); i++) {
     Vec3 modelPos0 = model.verts[model.faces[i * 3]];
     Vec3 modelPos1 = model.verts[model.faces[i * 3 + 1]];
@@ -58,8 +61,7 @@ void renderObj(const SceneObj &obj, const Camera &camera, Lighting lighting,
       ScreenVertex sv0 = toScreen(clippedTriangles[j][0], vp);
       ScreenVertex sv1 = toScreen(clippedTriangles[j][1], vp);
       ScreenVertex sv2 = toScreen(clippedTriangles[j][2], vp);
-      triangle(sv0, sv1, sv2, framebuffer, zbuffer, lighting, obj.material,
-               camera.eye, lightSpaceMat, shadowMap);
+      triangle(sv0, sv1, sv2, framebuffer, zbuffer, shading);
     }
   }
 }

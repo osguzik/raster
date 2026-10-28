@@ -1,11 +1,9 @@
 #pragma once
 
 #include "image.hpp"
-#include "math/mat.hpp"
 #include "math/vec.hpp"
-#include "render/material.hpp"
 #include "render/rasterize/vertex.hpp"
-#include "render/shading/lighting.hpp"
+#include "render/shading/shading_context.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -72,5 +70,4 @@ void rasterize(const ScreenVertex &v0, const ScreenVertex &v1,
 
 void triangle(const ScreenVertex &v0, const ScreenVertex &v1,
               const ScreenVertex &v2, Image &img, std::vector<float> &zbuffer,
-              Lighting lighting, const Material &material, const Vec3 &eye,
-              const Mat4 &lightSpaceMat, const std::vector<float> &shadowMap);
+              const ShadingContext &shading);
